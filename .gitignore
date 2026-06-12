@@ -1,0 +1,10 @@
+.DS_Store
+*.local
+
+node_modules/
+.svelte-kit/
+build/
+dist/
+.vercel/
+
+data/excel/~$*.xlsx
