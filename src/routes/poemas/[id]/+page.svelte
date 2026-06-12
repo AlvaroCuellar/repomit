@@ -148,7 +148,7 @@
         <dt>Estructura: cabeza + estrofa(s) de desarrollo</dt>
         <dd>{display(poema.estructura_cabeza)}</dd>
       </div>
-      {#if shouldShowConditional(poema.estructura_cabeza, poema.incipit_desarrollo)}
+      {#if hasText(poema.incipit_desarrollo)}
         <div>
           <dt>Íncipit de la primera estrofa de desarrollo</dt>
           <dd>{@html htmlOrText(poema.incipit_desarrollo_html, poema.incipit_desarrollo)}</dd>
@@ -158,7 +158,7 @@
         <dt>Estructura: composición principal + composición(es) interna(s)/final(es)</dt>
         <dd>{display(poema.estructura_interna)}</dd>
       </div>
-      {#if shouldShowConditional(poema.estructura_interna, poema.incipit_interno)}
+      {#if hasText(poema.incipit_interno)}
         <div>
           <dt>Íncipit de la(s) composición(es) interna(s)/final(es)</dt>
           <dd>{@html htmlOrText(poema.incipit_interno_html, poema.incipit_interno)}</dd>

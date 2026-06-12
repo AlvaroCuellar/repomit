@@ -177,9 +177,15 @@ function getMatchedFields(poema: Poema, query: string, scope: SearchScope, mode:
 function getFieldsForScope(poema: Poema, scope: SearchScope): SearchField[] {
   if (scope === 'incipit') {
     return [
-      { label: 'íncipit', value: poema.search_incipit || poema.incipit },
-      { label: 'íncipit de desarrollo', value: poema.incipit_desarrollo },
-      { label: 'íncipit interno', value: poema.incipit_interno }
+      { label: 'íncipit', value: poema.incipit },
+      {
+        label: 'íncipit de la primera estrofa de desarrollo',
+        value: poema.incipit_desarrollo
+      },
+      {
+        label: 'íncipit de la(s) composición(es) interna(s)/final(es)',
+        value: poema.incipit_interno
+      }
     ];
   }
 
@@ -189,8 +195,14 @@ function getFieldsForScope(poema: Poema, scope: SearchScope): SearchField[] {
       { label: 'segundo verso', value: poema.search_verso || poema.segundo_verso },
       { label: 'éxplicit', value: poema.explicit },
       { label: 'epígrafe', value: poema.epigrafe },
-      { label: 'íncipit de desarrollo', value: poema.incipit_desarrollo },
-      { label: 'íncipit interno', value: poema.incipit_interno },
+      {
+        label: 'íncipit de la primera estrofa de desarrollo',
+        value: poema.incipit_desarrollo
+      },
+      {
+        label: 'íncipit de la(s) composición(es) interna(s)/final(es)',
+        value: poema.incipit_interno
+      },
       { label: 'estribillo', value: poema.estribillo_entero },
       { label: 'transcripción', value: poema.transcripcion }
     ];

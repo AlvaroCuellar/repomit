@@ -42,6 +42,11 @@
     mode = 'exacta';
     appliedCriteria = null;
   }
+
+  function hasText(value: string | undefined) {
+    const normalized = String(value ?? '').trim();
+    return normalized !== '' && normalized !== '—' && normalized !== '-';
+  }
 </script>
 
 <h1>Búsqueda</h1>
@@ -113,6 +118,22 @@
           <a class="item-link" href={`/poemas/${result.poema.id}`}>{result.poema.item}</a>
           <h2>{result.poema.incipit}</h2>
           <dl>
+            <div>
+              <dt>Íncipit</dt>
+              <dd>{result.poema.incipit || '—'}</dd>
+            </div>
+            {#if hasText(result.poema.incipit_desarrollo)}
+              <div>
+                <dt>Íncipit de la primera estrofa de desarrollo</dt>
+                <dd>{result.poema.incipit_desarrollo}</dd>
+              </div>
+            {/if}
+            {#if hasText(result.poema.incipit_interno)}
+              <div>
+                <dt>Íncipit de la(s) composición(es) interna(s)/final(es)</dt>
+                <dd>{result.poema.incipit_interno}</dd>
+              </div>
+            {/if}
             <div>
               <dt>Segundo verso</dt>
               <dd>{result.poema.segundo_verso || '—'}</dd>

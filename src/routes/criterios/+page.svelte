@@ -47,6 +47,11 @@
     La búsqueda ignora puntuación, mayúsculas y tildes. Esto permite localizar variantes
     gráficas de un mismo término sin exigir coincidencia literal estricta.
   </p>
+  <p>
+    La búsqueda por íncipit consulta tres campos: el íncipit de la composición, el
+    íncipit de la primera estrofa de desarrollo y el íncipit de la(s) composición(es)
+    interna(s)/final(es), cuando estos últimos existen.
+  </p>
 </section>
 
 <section>

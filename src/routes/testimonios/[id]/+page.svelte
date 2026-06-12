@@ -170,12 +170,6 @@
         <dt>Autor(es) de la ficha</dt>
         <dd>{display(testimonio.autores_ficha)}</dd>
       </div>
-      {#if hasText(testimonio.source_file)}
-        <div>
-          <dt>Fuente de catalogación</dt>
-          <dd>{testimonio.source_file}</dd>
-        </div>
-      {/if}
     </dl>
   </section>
 
