@@ -50,9 +50,9 @@
 <section>
   <h2>Cómo participar</h2>
   <p>
-    La versión actual es preliminar. Las colaboraciones pueden orientarse a la identificación
-    de nuevos testimonios, revisión de fichas, control de atribuciones, normalización métrica
-    o mejora de datos bibliográficos.
+    Las colaboraciones pueden orientarse a la identificación de nuevos testimonios,
+    revisión de fichas, control de atribuciones, normalización métrica o mejora de datos
+    bibliográficos.
   </p>
 </section>
 
@@ -67,8 +67,9 @@
 <section>
   <h2>Créditos</h2>
   <p>
-    RePoMIt es una herramienta académica en desarrollo. Su contenido y su infraestructura
-    digital se revisarán progresivamente a medida que se incorporen nuevos testimonios y
-    criterios de catalogación compartidos.
+    RePoMIt es una herramienta académica para la consulta de poesía castellana áurea
+    conservada en manuscritos italianos. Su contenido y su infraestructura digital se
+    actualizan a medida que se incorporan nuevos testimonios y criterios de catalogación
+    compartidos.
   </p>
 </section>

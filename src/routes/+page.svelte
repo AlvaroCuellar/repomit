@@ -1,11 +1,9 @@
-<script lang="ts">
-  import InstitutionalLogos from '$lib/components/InstitutionalLogos.svelte';
-  import { poemas, testimonios } from '$lib/data/repomit';
-</script>
-
 <section class="home-header">
   <h1>RePoMIt</h1>
-  <p class="subtitle">Repertorio de la poesía en castellano en manuscritos italianos</p>
+  <p class="subtitle">
+    <strong>Re</strong>pertorio de la <strong>po</strong>esía en castellano en
+    <strong>m</strong>anuscritos <strong>it</strong>alianos
+  </p>
 </section>
 
 <section class="intro">
@@ -23,13 +21,11 @@
   </p>
 
   <p>
-    La versión actual es preliminar y trabaja con testimonios completos: las composiciones
-    se ordenan según su posición topográfica en cada manuscrito y se identifican mediante
-    el ítem formado por testimonio y orden.
+    El repertorio trabaja con testimonios completos: las composiciones se ordenan según su
+    posición topográfica en cada manuscrito y se identifican mediante el ítem formado por
+    testimonio y orden.
   </p>
 </section>
-
-<InstitutionalLogos />
 
 <nav class="featured-links" aria-label="Accesos principales">
   <a href="/busqueda">
@@ -46,14 +42,6 @@
   </a>
 </nav>
 
-<section class="status">
-  <h2>Estado</h2>
-  <p>
-    Versión preliminar: {testimonios.length} testimonios y {poemas.length}
-    composiciones catalogadas.
-  </p>
-</section>
-
 <style>
   .home-header {
     padding-bottom: 1rem;
@@ -64,6 +52,11 @@
     margin: 0;
     color: #4c463d;
     font-size: 1.15rem;
+  }
+
+  .subtitle strong {
+    color: #23201d;
+    font-weight: 800;
   }
 
   .intro {
@@ -91,11 +84,6 @@
   .featured-links span {
     color: #4c463d;
     line-height: 1.45;
-  }
-
-  .status {
-    padding-top: 1rem;
-    border-top: 1px solid #e4dfd4;
   }
 
   @media (max-width: 760px) {

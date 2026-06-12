@@ -27,8 +27,8 @@
 <section>
   <h2>Criterios de transcripción y modernización gráfica</h2>
   <p>
-    La versión preliminar distingue los campos descriptivos de la transcripción completa.
-    Cuando se incorpore transcripción, se mantendrá la trazabilidad con el testimonio y se
+    RePoMIt distingue los campos descriptivos de la transcripción completa. Cuando se
+    incorpore transcripción, se mantendrá la trazabilidad con el testimonio y se
     explicitarán los criterios de modernización gráfica aplicados.
   </p>
 </section>
@@ -67,9 +67,9 @@
 </section>
 
 <section>
-  <h2>Estado preliminar de los datos</h2>
+  <h2>Actualización de los datos</h2>
   <p>
-    Los datos se encuentran en fase preliminar. Las fichas, atribuciones, formas métricas y
-    referencias bibliográficas podrán revisarse a medida que avance el proyecto.
+    Las fichas, atribuciones, formas métricas y referencias bibliográficas se actualizan
+    cuando se incorporan nuevos testimonios o se revisan los criterios de catalogación.
   </p>
 </section>

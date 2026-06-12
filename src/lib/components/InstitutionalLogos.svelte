@@ -8,7 +8,7 @@
       href: 'https://www.cervantes.es',
       logo: '/logos/instituto-cervantes.svg',
       alt: 'Logotipo del Instituto Cervantes',
-      width: '74px'
+      width: '42px'
     },
     {
       name: 'Università eCampus',
@@ -16,15 +16,7 @@
       href: 'https://www.uniecampus.it',
       logo: '/logos/ecampus.svg',
       alt: 'Logotipo de Università eCampus',
-      width: '230px'
-    },
-    {
-      name: 'Universitat Autònoma de Barcelona',
-      role: 'desarrollo digital',
-      href: 'https://www.uab.cat',
-      logo: '/logos/uab.svg',
-      alt: 'Logotipo de la Universitat Autònoma de Barcelona',
-      width: '185px'
+      width: '190px'
     },
     {
       name: 'AISPI',
@@ -32,8 +24,8 @@
       href: 'https://www.aispi.it/',
       logo: '/logos/aispi.png',
       alt: 'Logotipo de AISPI',
-      width: '132px',
-      cropWidth: '132px'
+      width: '206px',
+      cropWidth: '76px'
     },
     {
       name: 'AISI',
@@ -41,7 +33,7 @@
       href: 'https://www.associazioneaisi.it/',
       logo: '/logos/aisi.svg',
       alt: 'Logotipo de AISI',
-      width: '210px'
+      width: '150px'
     }
   ];
 </script>
@@ -51,6 +43,8 @@
     <a
       class="institution"
       href={institution.href}
+      target="_blank"
+      rel="noopener noreferrer"
       style={`--logo-width: ${institution.width}; --crop-width: ${institution.cropWidth ?? institution.width};`}
     >
       <span class:cropped={Boolean(institution.cropWidth)} class="logo-slot">
@@ -62,7 +56,7 @@
           </span>
         {/if}
       </span>
-      <span class="meta">
+      <span class="meta" aria-hidden={compact}>
         <span class="name">{institution.name}</span>
         <span class="role">{institution.role}</span>
       </span>
@@ -74,16 +68,14 @@
   .institutional-logos {
     display: flex;
     flex-wrap: wrap;
-    gap: 1.15rem 1.65rem;
-    align-items: flex-start;
-    margin: 1.5rem 0 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid #e4dfd4;
+    gap: 1rem 1.4rem;
+    align-items: center;
+    margin: 1rem 0;
   }
 
   .institution {
     display: grid;
-    gap: 0.45rem;
+    gap: 0.35rem;
     align-content: start;
     width: var(--logo-width);
     max-width: 100%;
@@ -143,32 +135,38 @@
   }
 
   .compact {
-    gap: 0.85rem 1.15rem;
-    margin: 0.85rem 0;
-    padding-top: 0.75rem;
+    gap: 0.65rem 1rem;
+    margin: 0;
+    align-items: center;
   }
 
   .compact .institution {
-    width: min(var(--logo-width), 150px);
+    display: flex;
+    width: auto;
+    align-items: center;
   }
 
   .compact .logo-slot {
-    width: min(var(--logo-width), 150px);
+    width: min(var(--logo-width), 120px);
     height: 42px;
   }
 
   .compact .logo-slot.cropped {
-    width: min(var(--crop-width), 90px);
+    width: min(var(--crop-width), 76px);
   }
 
   .compact img {
-    max-width: min(var(--logo-width), 150px);
+    max-width: min(var(--logo-width), 120px);
     max-height: 42px;
   }
 
   .compact .cropped img {
     height: 42px;
     max-width: none;
+  }
+
+  .compact .meta {
+    display: none;
   }
 
   .compact .text-mark {
@@ -185,7 +183,37 @@
 
   @media (max-width: 640px) {
     .institutional-logos {
-      gap: 1rem 1.25rem;
+      gap: 0.85rem 1rem;
+    }
+
+    .compact .institution {
+      width: auto;
+    }
+
+    .compact .logo-slot {
+      width: min(var(--logo-width), 96px);
+      height: 32px;
+    }
+
+    .compact .logo-slot.cropped {
+      width: min(var(--crop-width), 58px);
+    }
+
+    .compact img {
+      max-width: min(var(--logo-width), 96px);
+      max-height: 32px;
+    }
+
+    .compact .cropped img {
+      height: 32px;
+    }
+
+    .compact .name {
+      font-size: 0.76rem;
+    }
+
+    .compact .role {
+      font-size: 0.7rem;
     }
   }
 </style>
