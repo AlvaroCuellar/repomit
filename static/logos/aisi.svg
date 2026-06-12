@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" role="img" aria-labelledby="title desc">
+  <title id="title">AISI</title>
+  <desc id="desc">Logotipo de la Associazione Italiana Studi Iberoamericani</desc>
+  <rect width="640" height="300" fill="#ffffff"/>
+  <g transform="translate(58 36)">
+    <path d="M57 0c-9 11 4 16-1 25-7 11 15 17 6 29-6 9 20 13 11 28-6 10 20 10 12 25-7 13 21 13 12 30-8 15 23 12 14 31-9 17 21 16 8 36-12 18 11 23-6 43"
+      fill="none" stroke="#080808" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M78 35c34 16 55 35 74 64-28 3-49 12-72 31 11-31 11-62-2-95z"
+      fill="#d11919" opacity="0.86"/>
+    <path d="M90 59c21 10 34 23 47 42-18 2-31 8-46 20 7-21 7-41-1-62z"
+      fill="#111111" opacity="0.75"/>
+  </g>
+  <text x="185" y="147"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="137"
+    font-weight="700"
+    letter-spacing="3"
+    fill="#c90f12">AISI</text>
+  <rect x="62" y="205" width="520" height="61" fill="#c90f12"/>
+  <text x="81" y="246"
+    font-family="Arial, Helvetica, sans-serif"
+    font-size="27"
+    font-weight="700"
+    fill="#ffffff">Associazione Italiana Studi Iberoamericani</text>
+</svg>

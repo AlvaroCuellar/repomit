@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Footer from '$lib/components/Footer.svelte';
+
   let { children } = $props();
 </script>
 
@@ -14,6 +16,7 @@
   <a class="brand" href="/">RePoMIt</a>
   <nav aria-label="Navegación principal">
     <a href="/presentacion">Presentación</a>
+    <a href="/criterios">Criterios</a>
     <a href="/manuscritos">Manuscritos</a>
     <a href="/repertorio">Repertorio</a>
     <a href="/busqueda">Búsqueda</a>
@@ -23,6 +26,8 @@
 <main>
   {@render children()}
 </main>
+
+<Footer />
 
 <style>
   :global(body) {
