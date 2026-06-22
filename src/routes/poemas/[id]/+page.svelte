@@ -86,7 +86,7 @@
         <dt>Segundo verso</dt>
         <dd>{@html htmlOrText(poema.segundo_verso_html, poema.segundo_verso)}</dd>
       </div>
-      <div>
+      <div class="wide-field">
         <dt>Éxplicit</dt>
         <dd>{@html htmlOrText(poema.explicit_html, poema.explicit)}</dd>
       </div>
@@ -226,6 +226,10 @@
   dd {
     margin: 0.2rem 0 0;
     line-height: 1.55;
+  }
+
+  .wide-field {
+    grid-column: 1 / -1;
   }
 
   .transcription {
