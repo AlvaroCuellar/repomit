@@ -42,7 +42,7 @@
   <h2>Cómo consultar el repertorio</h2>
   <p>
     El usuario puede consultar el repertorio alfabético, acceder a las fichas de manuscritos
-    o utilizar la búsqueda por íncipit, verso, ítem, autor, forma, testimonio y texto libre.
+    o utilizar la búsqueda por íncipit, verso, epígrafe, estribillo, autor y texto libre.
     La búsqueda ignora puntuación, mayúsculas y tildes.
   </p>
 </section>

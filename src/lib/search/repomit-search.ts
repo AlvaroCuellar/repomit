@@ -1,6 +1,6 @@
 import type { Poema, Testimonio } from '$lib/data/repomit';
 
-export type SearchScope = 'incipit' | 'verso' | 'item' | 'autor' | 'libre';
+export type SearchScope = 'incipit' | 'verso' | 'autor' | 'epigrafe' | 'estribillo' | 'libre';
 export type MatchMode = 'exacta' | 'todas' | 'alguna';
 
 export type SearchCriteria = {
@@ -26,20 +26,6 @@ type SearchField = {
   value: string;
 };
 
-const STOP_WORDS = new Set([
-  'a',
-  'al',
-  'de',
-  'del',
-  'el',
-  'en',
-  'la',
-  'las',
-  'lo',
-  'los',
-  'y'
-]);
-
 export function normalizeSearchText(value: string) {
   return String(value ?? '')
     .replace(/\u00a0/g, ' ')
@@ -53,9 +39,7 @@ export function normalizeSearchText(value: string) {
 }
 
 export function getFormaOptions(poemas: Poema[]) {
-  return Array.from(new Set(poemas.map((poema) => poema.forma).filter(Boolean))).sort((a, b) =>
-    a.localeCompare(b, 'es')
-  );
+  return Array.from(new Set(poemas.map((poema) => poema.forma).filter(Boolean))).sort(compareFormas);
 }
 
 export function getTestimonioOptions(testimonios: Testimonio[]) {
@@ -170,7 +154,7 @@ function matchesFilters(poema: Poema, criteria: SearchCriteria) {
 
 function getMatchedFields(poema: Poema, query: string, scope: SearchScope, mode: MatchMode) {
   return getFieldsForScope(poema, scope)
-    .filter((field) => fieldMatches(field, query, mode, scope))
+    .filter((field) => fieldMatches(field, query, mode))
     .map((field) => field.label);
 }
 
@@ -192,9 +176,8 @@ function getFieldsForScope(poema: Poema, scope: SearchScope): SearchField[] {
   if (scope === 'verso') {
     return [
       { label: 'íncipit', value: poema.incipit },
-      { label: 'segundo verso', value: poema.search_verso || poema.segundo_verso },
+      { label: 'segundo verso', value: poema.segundo_verso },
       { label: 'éxplicit', value: poema.explicit },
-      { label: 'epígrafe', value: poema.epigrafe },
       {
         label: 'íncipit de la primera estrofa de desarrollo',
         value: poema.incipit_desarrollo
@@ -208,64 +191,85 @@ function getFieldsForScope(poema: Poema, scope: SearchScope): SearchField[] {
     ];
   }
 
-  if (scope === 'item') {
-    return [
-      { label: 'ítem', value: poema.item },
-      { label: 'ítem original', value: poema.item_original ?? '' }
-    ];
-  }
-
   if (scope === 'autor') {
     return [
-      { label: 'atribución', value: poema.atribucion },
-      { label: 'autor', value: poema.search_autor }
+      { label: 'epígrafe', value: poema.epigrafe },
+      { label: 'atribución', value: poema.atribucion }
     ];
   }
 
-  return [{ label: 'búsqueda libre', value: poema.search_general }];
-}
-
-function fieldMatches(field: SearchField, query: string, mode: MatchMode, scope: SearchScope) {
-  const value = normalizeSearchText(field.value);
-
-  if (!value) {
-    return false;
+  if (scope === 'epigrafe') {
+    return [{ label: 'epígrafe', value: poema.epigrafe }];
   }
 
-  if (scope === 'autor' && authorMatches(value, query, mode)) {
-    return true;
+  if (scope === 'estribillo') {
+    return [{ label: 'estribillo', value: poema.estribillo_entero }];
+  }
+
+  return [
+    { label: 'íncipit', value: poema.incipit },
+    { label: 'segundo verso', value: poema.segundo_verso },
+    { label: 'éxplicit', value: poema.explicit },
+    { label: 'epígrafe', value: poema.epigrafe },
+    { label: 'atribución', value: poema.atribucion },
+    {
+      label: 'íncipit de la primera estrofa de desarrollo',
+      value: poema.incipit_desarrollo
+    },
+    {
+      label: 'íncipit de la(s) composición(es) interna(s)/final(es)',
+      value: poema.incipit_interno
+    },
+    { label: 'estribillo', value: poema.estribillo_entero },
+    { label: 'transcripción', value: poema.transcripcion }
+  ];
+}
+
+function fieldMatches(field: SearchField, query: string, mode: MatchMode) {
+  const valueTokens = tokenizeSearchText(field.value);
+  const queryTokens = tokenizeNormalizedText(query);
+
+  if (valueTokens.length === 0 || queryTokens.length === 0) {
+    return false;
   }
 
   if (mode === 'exacta') {
-    return value.includes(query);
-  }
-
-  const words = query.split(' ').filter(Boolean);
-  if (words.length === 0) {
-    return false;
+    return containsTokenSequence(valueTokens, queryTokens);
   }
 
   if (mode === 'todas') {
-    return words.every((word) => value.includes(word));
+    return queryTokens.every((word) => valueTokens.includes(word));
   }
 
-  return words.some((word) => value.includes(word));
+  return queryTokens.some((word) => valueTokens.includes(word));
 }
 
-function authorMatches(value: string, query: string, mode: MatchMode) {
-  if (value.includes(query)) {
-    return true;
+function tokenizeSearchText(value: string) {
+  return tokenizeNormalizedText(normalizeSearchText(value));
+}
+
+function tokenizeNormalizedText(value: string) {
+  return value.split(' ').filter(Boolean);
+}
+
+function containsTokenSequence(tokens: string[], sequence: string[]) {
+  if (sequence.length > tokens.length) {
+    return false;
   }
 
-  const words = query.split(' ').filter(Boolean);
-  const principalWords = query
-    .split(' ')
-    .filter((word) => word.length > 2 && !STOP_WORDS.has(word));
-  const comparableWords = principalWords.length > 0 ? principalWords : words;
+  return tokens.some((_, index) =>
+    sequence.every((token, sequenceIndex) => tokens[index + sequenceIndex] === token)
+  );
+}
 
-  if (mode === 'alguna') {
-    return comparableWords.some((word) => value.includes(word));
-  }
+function compareFormas(a: string, b: string) {
+  const cancionPriority = new Map([
+    ['canción en arte menor', 'cancion-1'],
+    ['canción petrarquista', 'cancion-2'],
+    ['canción (otras formas)', 'cancion-3']
+  ]);
+  const aComparable = cancionPriority.get(a) ?? a;
+  const bComparable = cancionPriority.get(b) ?? b;
 
-  return comparableWords.length > 0 && comparableWords.every((word) => value.includes(word));
+  return aComparable.localeCompare(bComparable, 'es');
 }

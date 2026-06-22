@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from '$app/stores';
-  import { getPoema, getTestimonio, poemas, type Poema } from '$lib/data/repomit';
+  import { getPoema, poemas, type Poema } from '$lib/data/repomit';
 
   const sortedPoemas = [...poemas].sort(
     (a, b) => a.sort_incipit.localeCompare(b.sort_incipit, 'es') || a.id.localeCompare(b.id, 'es')
@@ -8,7 +8,6 @@
 
   $: id = $page.params.id;
   $: poema = getPoema(id);
-  $: testimonio = poema ? getTestimonio(poema.testimonio_id) : undefined;
   $: currentIndex = poema ? sortedPoemas.findIndex((entry) => entry.id === poema.id) : -1;
   $: previousPoema = currentIndex > 0 ? sortedPoemas[currentIndex - 1] : undefined;
   $: nextPoema =
@@ -23,22 +22,6 @@
 
   function display(value: string | undefined) {
     return hasText(value) ? value : '—';
-  }
-
-  function isYes(value: string | undefined) {
-    return String(value ?? '')
-      .trim()
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') === 'si';
-  }
-
-  function shouldShowConditional(flag: string | undefined, value: string | undefined) {
-    return isYes(flag) || hasText(value);
-  }
-
-  function canonicalNote(current: string | undefined, original: string | undefined) {
-    return original && current && original !== current ? `${original} -> ${current}` : '';
   }
 
   function htmlOrText(html: string | undefined, text: string | undefined) {
@@ -60,24 +43,6 @@
   <header class="record-header">
     <p class="item">{poema.item}</p>
     <h1>{poema.incipit}</h1>
-    <dl>
-      <div>
-        <dt>Testimonio</dt>
-        <dd><a href={fichaTestimonioHref(poema)}>{poema.testimonio}</a></dd>
-      </div>
-      <div>
-        <dt>Folios/páginas</dt>
-        <dd>{display(poema.folios)}</dd>
-      </div>
-      <div>
-        <dt>Forma</dt>
-        <dd>{display(poema.forma)}</dd>
-      </div>
-      <div>
-        <dt>Atribución</dt>
-        <dd>{display(poema.atribucion)}</dd>
-      </div>
-    </dl>
   </header>
 
   <section class="block">
@@ -89,50 +54,19 @@
       </div>
       <div>
         <dt>Testimonio</dt>
-        <dd>
-          <a href={fichaTestimonioHref(poema)}>{poema.testimonio}</a>
-          {#if testimonio}
-            <span class="muted">({testimonio.institucion})</span>
-          {/if}
-        </dd>
+        <dd><a href={fichaTestimonioHref(poema)}>{poema.testimonio}</a></dd>
+      </div>
+      <div>
+        <dt>Folios/páginas</dt>
+        <dd>{display(poema.folios)}</dd>
       </div>
       <div>
         <dt>Orden topográfico</dt>
         <dd>{display(poema.orden)}</dd>
       </div>
       <div>
-        <dt>Folios/páginas</dt>
-        <dd>{display(poema.folios)}</dd>
-      </div>
-    </dl>
-  </section>
-
-  <section class="block">
-    <h2>Texto y descripción</h2>
-    <dl>
-      <div>
-        <dt>Íncipit</dt>
-        <dd>{display(poema.incipit)}</dd>
-      </div>
-      <div>
-        <dt>Segundo verso</dt>
-        <dd>{display(poema.segundo_verso)}</dd>
-      </div>
-      <div>
-        <dt>Éxplicit</dt>
-        <dd>{display(poema.explicit)}</dd>
-      </div>
-      <div>
         <dt>Epígrafe</dt>
         <dd>{display(poema.epigrafe)}</dd>
-      </div>
-      <div>
-        <dt>Forma</dt>
-        <dd>{display(poema.forma)}</dd>
-      </div>
-      <div>
-        <dt>Esquema métrico</dt>
-        <dd>{display(poema.esquema_metrico)}</dd>
       </div>
       <div>
         <dt>Atribución</dt>
@@ -145,53 +79,57 @@
     <h2>Estructura</h2>
     <dl>
       <div>
+        <dt>Íncipit</dt>
+        <dd>{@html htmlOrText(poema.incipit_html, poema.incipit)}</dd>
+      </div>
+      <div>
+        <dt>Segundo verso</dt>
+        <dd>{@html htmlOrText(poema.segundo_verso_html, poema.segundo_verso)}</dd>
+      </div>
+      <div>
+        <dt>Éxplicit</dt>
+        <dd>{@html htmlOrText(poema.explicit_html, poema.explicit)}</dd>
+      </div>
+      <div>
+        <dt>Forma</dt>
+        <dd>{display(poema.forma)}</dd>
+      </div>
+      <div>
+        <dt>Esquema métrico</dt>
+        <dd>{@html htmlOrText(poema.esquema_metrico_html, poema.esquema_metrico)}</dd>
+      </div>
+      <div>
         <dt>Estructura: cabeza + estrofa(s) de desarrollo</dt>
         <dd>{display(poema.estructura_cabeza)}</dd>
       </div>
-      {#if hasText(poema.incipit_desarrollo)}
-        <div>
-          <dt>Íncipit de la primera estrofa de desarrollo</dt>
-          <dd>{@html htmlOrText(poema.incipit_desarrollo_html, poema.incipit_desarrollo)}</dd>
-        </div>
-      {/if}
+      <div>
+        <dt>Íncipit de la primera estrofa de desarrollo</dt>
+        <dd>{@html htmlOrText(poema.incipit_desarrollo_html, poema.incipit_desarrollo)}</dd>
+      </div>
       <div>
         <dt>Estructura: composición principal + composición(es) interna(s)/final(es)</dt>
         <dd>{display(poema.estructura_interna)}</dd>
       </div>
-      {#if hasText(poema.incipit_interno)}
-        <div>
-          <dt>Íncipit de la(s) composición(es) interna(s)/final(es)</dt>
-          <dd>{@html htmlOrText(poema.incipit_interno_html, poema.incipit_interno)}</dd>
-        </div>
-      {/if}
       <div>
-        <dt>Estribillo</dt>
+        <dt>Íncipit de la(s) composición(es) interna(s)/final(es)</dt>
+        <dd>{@html htmlOrText(poema.incipit_interno_html, poema.incipit_interno)}</dd>
+      </div>
+      <div>
+        <dt>Estribillo(s) (sí/no)</dt>
         <dd>{display(poema.estribillo)}</dd>
       </div>
-      {#if shouldShowConditional(poema.estribillo, poema.estribillo_entero)}
-        <div>
-          <dt>Estribillo entero</dt>
-          <dd>{@html htmlOrText(poema.estribillo_entero_html, poema.estribillo_entero)}</dd>
-        </div>
-      {/if}
+      <div>
+        <dt>Estribillo(s)</dt>
+        <dd>{@html htmlOrText(poema.estribillo_entero_html, poema.estribillo_entero)}</dd>
+      </div>
     </dl>
-  </section>
-
-  <section class="block">
-    <h2>Transcripción</h2>
-    {#if hasText(poema.transcripcion)}
-      <div class="transcription">{@html htmlOrText(poema.transcripcion_html, poema.transcripcion)}</div>
-    {:else}
-      <p>No consta transcripción completa.</p>
-    {/if}
-    <p><strong>Autor(es) de la transcripción:</strong> {display(poema.autores_transcripcion)}</p>
   </section>
 
   <section class="block">
     <h2>Responsabilidad y revisión</h2>
     <dl>
       <div>
-        <dt>Autor(es) de la ficha</dt>
+        <dt>Responsable(s) de la ficha</dt>
         <dd>{display(poema.autores_ficha)}</dd>
       </div>
       {#if hasText(poema.fecha_creacion)}
@@ -207,18 +145,21 @@
         </div>
       {/if}
     </dl>
+  </section>
 
-    {#if canonicalNote(poema.item, poema.item_original) || canonicalNote(poema.testimonio, poema.testimonio_original)}
-      <p class="technical-note">
-        <strong>Nota técnica.</strong> Forma normalizada para visualización:
-        {#if canonicalNote(poema.item, poema.item_original)}
-          ítem {canonicalNote(poema.item, poema.item_original)}
-        {/if}
-        {#if canonicalNote(poema.testimonio, poema.testimonio_original)}
-          testimonio {canonicalNote(poema.testimonio, poema.testimonio_original)}
-        {/if}
-      </p>
+  <section class="block">
+    <h2>Transcripción</h2>
+    {#if hasText(poema.transcripcion)}
+      <div class="transcription">{@html htmlOrText(poema.transcripcion_html, poema.transcripcion)}</div>
+    {:else}
+      <p>No consta transcripción completa.</p>
     {/if}
+    <dl class="transcription-meta">
+      <div>
+        <dt>Responsable(s) de la transcripción</dt>
+        <dd>{display(poema.autores_transcripcion)}</dd>
+      </div>
+    </dl>
   </section>
 
   <nav class="adjacent" aria-label="Navegación alfabética">
@@ -255,6 +196,10 @@
     border-bottom: 1px solid #d8d0c2;
   }
 
+  .record-header h1 {
+    margin-bottom: 0;
+  }
+
   .item {
     margin: 0 0 0.4rem;
     color: #674c19;
@@ -283,19 +228,12 @@
     line-height: 1.55;
   }
 
-  .muted,
-  .technical-note {
-    color: #6c6256;
-  }
-
-  .technical-note {
-    margin-top: 1rem;
-    font-size: 0.82rem;
-    line-height: 1.5;
-  }
-
   .transcription {
     line-height: 1.65;
+  }
+
+  .transcription-meta {
+    margin-top: 1rem;
   }
 
   .adjacent {

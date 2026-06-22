@@ -34,11 +34,14 @@ export type Poema = {
   search_incipit: string;
   search_verso: string;
   search_autor: string;
+  search_epigrafe: string;
+  search_estribillo: string;
   search_general: string;
   sort_incipit: string;
   incipit_html: string;
   segundo_verso_html: string;
   explicit_html: string;
+  esquema_metrico_html: string;
   incipit_desarrollo_html: string;
   incipit_interno_html: string;
   estribillo_entero_html: string;

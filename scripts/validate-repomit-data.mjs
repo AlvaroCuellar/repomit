@@ -7,7 +7,13 @@ const generatedDir = path.join(root, 'data', 'generated');
 
 const allowedBooleanLike = new Set(['si', 'sí', 'no', '—', '-']);
 const structureFields = ['estructura_cabeza', 'estructura_interna', 'estribillo'];
-const searchFields = ['search_incipit', 'search_verso', 'search_autor', 'search_general', 'sort_incipit'];
+const searchFields = [
+  'search_incipit',
+  'search_verso',
+  'search_autor',
+  'search_general',
+  'sort_incipit'
+];
 const htmlTagPattern = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
 const allowedHtmlTags = new Set(['em', 'br']);
 

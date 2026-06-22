@@ -167,7 +167,7 @@
     <h2>Responsabilidad</h2>
     <dl>
       <div>
-        <dt>Autor(es) de la ficha</dt>
+        <dt>Responsable(s) de la ficha</dt>
         <dd>{display(testimonio.autores_ficha)}</dd>
       </div>
     </dl>

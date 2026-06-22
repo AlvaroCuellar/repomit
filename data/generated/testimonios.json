@@ -1,7 +1,7 @@
 [
   {
     "id": "nanb-va16",
-    "source_file": "NaNB V.A.16 (ok).xlsx",
+    "source_file": "NaNB V.A.16 (okok).xlsx",
     "source_row": 2,
     "testimonio": "NaNB V.A.16",
     "ciudad": "Nápoles",
@@ -17,8 +17,25 @@
     "bibliografia_html": "Molinaro, Antonietta, <em>Il Cancionero ms. brancacciano V A 16 della Biblioteca Nazionale di Napoli</em>, Pisa, Edizioni ETS, 2019."
   },
   {
+    "id": "rolc-44a16",
+    "source_file": "RoLC 625 (okok).xlsx",
+    "source_row": 2,
+    "testimonio": "RoLC 44.A.16",
+    "ciudad": "Roma",
+    "institucion": "Biblioteca dell'Accademia dei Lincei",
+    "signatura": "Fondo Corsini, ms. 625",
+    "recopilador": "[anónimo]",
+    "fecha": "[1605-1613]",
+    "contenido": "IIIr : ¿Adónde se hallará aquella nobleza ǀ 1r-2v : De mí se aparta el Placer ǀ 3r-4r : Esto que me abrasa el pecho ǀ 4v-5r : Esclavo soy, pero el cuyo ǀ 5v-6v : Si un verdadero amor amor merece ǀ 7r-8v : Hombre que está sin amores ǀ 9r-11r : Por las montañas de Jaca ǀ 11v-13r : En el suelo alumbra ǀ 13v-14v : Zagaleja, pues te vas ǀ 15r-16r : Dama angélica y divina ǀ 16v-17r : Corre, corre, corre ǀ 17v-18r : Si se entiende el mal de amor ǀ 18v-19r : Pisaré yo el polvillo ǀ 19v-20v : Si queréis que os enrame la puerta ǀ 21rv : Fenisa y Albanio han hecho ǀ 22r-23v : [Y] tal conejuelo ǀ 24rv : Que no sabéis qué es ǀ 25rv : Ay, que no oso ǀ 26r-27r : Arrojome las naranjicas ǀ 27v-28v : En esta larga ausencia ǀ 29r-30v : ¿Hay quién me quiera comprar ǀ 31r-32v : Una jardinerica ǀ 33r-42r : Quien no conoce de vino ǀ 42v-44v : Una batalla de amor ǀ 45rv : Tal es la esperanza mía ǀ 46r-48r : Buena es la color morena ǀ 48v-50r : Dios me guarde, Dios me guarde ǀ 50v-55v : Que no hay tal vida en esta vida ǀ 56r-57r : \"Óigame, señor doctor\" ǀ 57v-58v : En los olivares de junto a Osuna ǀ 59r-60v : Las cuerdas de mi instrumento ǀ 61rv : De mi tormento mortal ǀ 62rv : Atinad, que dais en la manta",
+    "enlace": "",
+    "bibliografia": "Botta, Patrizia (ed.), Poesía y música en la Roma barroca. El cancionero español Corsini 625, Napoli, Liguori, 2022",
+    "autores_ficha": "Vignoli, Giulia",
+    "contenido_html": "IIIr : ¿Adónde se hallará aquella nobleza<br><br>1r-2v : De mí se aparta el Placer<br><br>3r-4r : Esto que me abrasa el pecho<br><br>4v-5r : Esclavo soy, pero el cuyo<br><br>5v-6v : Si un verdadero amor amor merece<br><br>7r-8v : Hombre que está sin amores<br><br>9r-11r : Por las montañas de Jaca<br><br>11v-13r : En el suelo alumbra<br><br>13v-14v : Zagaleja, pues te vas<br><br>15r-16r : Dama angélica y divina<br><br>16v-17r : Corre, corre, corre<br><br>17v-18r : Si se entiende el mal de amor<br><br>18v-19r : Pisaré yo el polvillo<br><br>19v-20v : Si queréis que os enrame la puerta<br><br>21rv : Fenisa y Albanio han hecho<br><br>22r-23v : [Y] tal conejuelo<br><br>24rv : Que no sabéis qué es<br><br>25rv : Ay, que no oso<br><br>26r-27r : Arrojome las naranjicas<br><br>27v-28v : En esta larga ausencia<br><br>29r-30v : ¿Hay quién me quiera comprar<br><br>31r-32v : Una jardinerica<br><br>33r-42r : Quien no conoce de vino<br><br>42v-44v : Una batalla de amor<br><br>45rv : Tal es la esperanza mía<br><br>46r-48r : Buena es la color morena<br><br>48v-50r : Dios me guarde, Dios me guarde<br><br>50v-55v : Que no hay tal vida en esta vida<br><br>56r-57r : &quot;Óigame, señor doctor&quot;<br><br>57v-58v : En los olivares de junto a Osuna<br><br>59r-60v : Las cuerdas de mi instrumento<br><br>61rv : De mi tormento mortal<br><br>62rv : Atinad, que dais en la manta",
+    "bibliografia_html": "Botta, Patrizia (ed.), <em>Poes</em><em>ía y mú</em><em>sica en la Roma barroca. El cancionero espa</em><em>ñol Corsini 625</em>, Napoli, Liguori, 2022"
+  },
+  {
     "id": "rovo-2882",
-    "source_file": "RoVO 2882 (ok).xlsx",
+    "source_file": "RoVO 2882 (okok).xlsx",
     "source_row": 2,
     "testimonio": "RoVO 2882",
     "ciudad": "Roma",

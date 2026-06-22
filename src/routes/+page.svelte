@@ -30,7 +30,7 @@
 <nav class="featured-links" aria-label="Accesos principales">
   <a href="/busqueda">
     <strong>Búsqueda</strong>
-    <span>Buscar por íncipit, verso, ítem, autor, forma, testimonio o texto libre.</span>
+    <span>Buscar por íncipit, verso, epígrafe, estribillo, autor o texto libre.</span>
   </a>
   <a href="/repertorio">
     <strong>Repertorio</strong>

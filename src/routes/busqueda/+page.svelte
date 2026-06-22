@@ -42,11 +42,6 @@
     mode = 'exacta';
     appliedCriteria = null;
   }
-
-  function hasText(value: string | undefined) {
-    const normalized = String(value ?? '').trim();
-    return normalized !== '' && normalized !== '—' && normalized !== '-';
-  }
 </script>
 
 <h1>Búsqueda</h1>
@@ -54,7 +49,7 @@
 <form class="search-form" onsubmit={runSearch}>
   <label class="full-width">
     Texto de búsqueda
-    <input bind:value={query} type="search" placeholder="Íncipit, verso, ítem o autor" />
+    <input bind:value={query} type="search" placeholder="Íncipit, verso, epígrafe, estribillo o atribución" />
   </label>
 
   <label>
@@ -62,29 +57,10 @@
     <select bind:value={scope}>
       <option value="incipit">íncipit</option>
       <option value="verso">verso</option>
-      <option value="item">ítem</option>
       <option value="autor">autor</option>
+      <option value="epigrafe">epígrafe</option>
+      <option value="estribillo">estribillo</option>
       <option value="libre">libre</option>
-    </select>
-  </label>
-
-  <label>
-    Forma
-    <select bind:value={forma}>
-      <option value="">Todas</option>
-      {#each formaOptions as option}
-        <option value={option}>{option}</option>
-      {/each}
-    </select>
-  </label>
-
-  <label>
-    Testimonio
-    <select bind:value={testimonioId}>
-      <option value="">Todos</option>
-      {#each testimonioOptions as option}
-        <option value={option.id}>{option.label}</option>
-      {/each}
     </select>
   </label>
 
@@ -100,6 +76,28 @@
   <div class="actions">
     <button type="submit">Buscar</button>
     <button type="button" class="secondary" onclick={clearSearch}>Limpiar</button>
+  </div>
+
+  <div class="filters-row">
+    <label>
+      Forma
+      <select bind:value={forma}>
+        <option value="">Todas</option>
+        {#each formaOptions as option}
+          <option value={option}>{option}</option>
+        {/each}
+      </select>
+    </label>
+
+    <label>
+      Testimonio
+      <select bind:value={testimonioId}>
+        <option value="">Todos</option>
+        {#each testimonioOptions as option}
+          <option value={option.id}>{option.label}</option>
+        {/each}
+      </select>
+    </label>
   </div>
 </form>
 
@@ -117,42 +115,22 @@
         <li>
           <a class="item-link" href={`/poemas/${result.poema.id}`}>{result.poema.item}</a>
           <h2>{result.poema.incipit}</h2>
-          <dl>
+          <dl class="result-preview">
             <div>
               <dt>Íncipit</dt>
               <dd>{result.poema.incipit || '—'}</dd>
             </div>
-            {#if hasText(result.poema.incipit_desarrollo)}
-              <div>
-                <dt>Íncipit de la primera estrofa de desarrollo</dt>
-                <dd>{result.poema.incipit_desarrollo}</dd>
-              </div>
-            {/if}
-            {#if hasText(result.poema.incipit_interno)}
-              <div>
-                <dt>Íncipit de la(s) composición(es) interna(s)/final(es)</dt>
-                <dd>{result.poema.incipit_interno}</dd>
-              </div>
-            {/if}
             <div>
               <dt>Segundo verso</dt>
               <dd>{result.poema.segundo_verso || '—'}</dd>
             </div>
-            <div>
-              <dt>Éxplicit</dt>
-              <dd>{result.poema.explicit || '—'}</dd>
+            <div class="wide">
+              <dt>Íncipit de la primera estrofa de desarrollo</dt>
+              <dd>{result.poema.incipit_desarrollo || '—'}</dd>
             </div>
             <div>
               <dt>Testimonio</dt>
               <dd>{result.poema.testimonio}</dd>
-            </div>
-            <div>
-              <dt>Folios</dt>
-              <dd>{result.poema.folios || '—'}</dd>
-            </div>
-            <div>
-              <dt>Atribución</dt>
-              <dd>{result.poema.atribucion || '—'}</dd>
             </div>
             <div>
               <dt>Forma</dt>
@@ -175,7 +153,7 @@
 <style>
   .search-form {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
     margin-bottom: 1.5rem;
     padding-bottom: 1.5rem;
@@ -191,6 +169,16 @@
 
   .full-width {
     grid-column: 1 / -1;
+  }
+
+  .filters-row {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 0.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e4dfd4;
   }
 
   input,
@@ -259,6 +247,10 @@
     margin: 0;
   }
 
+  .result-preview .wide {
+    grid-column: 1 / -1;
+  }
+
   dt {
     color: #6c6256;
     font-size: 0.85rem;
@@ -276,6 +268,7 @@
 
   @media (max-width: 760px) {
     .search-form,
+    .filters-row,
     dl {
       grid-template-columns: 1fr;
     }

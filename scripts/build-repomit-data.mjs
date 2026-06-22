@@ -46,6 +46,7 @@ const POEMA_HTML_FIELDS = [
   'incipit',
   'segundo_verso',
   'explicit',
+  'esquema_metrico',
   'incipit_desarrollo',
   'incipit_interno',
   'estribillo_entero',
@@ -89,6 +90,7 @@ const excelFiles = (await readdir(excelDir))
 
 const poemas = [];
 const testimoniosById = new Map();
+const testimoniosBySourceFile = new Map();
 const importedFiles = [];
 const canonicalizationMap = new Map();
 
@@ -146,8 +148,11 @@ for (const filename of excelFiles) {
     continue;
   }
 
+  const fileTestimonios = [];
+
   for (const row of testimonyRows.records) {
     const testimonio = buildTestimonio(row, filename);
+    fileTestimonios.push(testimonio);
     if (!testimoniosById.has(testimonio.id)) {
       testimoniosById.set(testimonio.id, testimonio);
       fileDiagnostic.testimonios += 1;
@@ -157,6 +162,8 @@ for (const filename of excelFiles) {
     fileDiagnostic.rich_text_cells += row.richTextCells;
     fileDiagnostic.italic_runs += row.italicRuns;
   }
+
+  testimoniosBySourceFile.set(filename, fileTestimonios);
 
   for (const row of poemRows.records) {
     fileDiagnostic.poemas += 1;
@@ -179,7 +186,7 @@ for (const filename of excelFiles) {
 
 for (const importedFile of importedFiles) {
   for (const row of importedFile.poemRows) {
-    poemas.push(buildPoema(row, importedFile.filename, testimoniosById));
+    poemas.push(buildPoema(row, importedFile.filename, testimoniosById, testimoniosBySourceFile));
   }
 }
 
@@ -293,12 +300,18 @@ function readSheetRows(worksheet, fields, isRealRow) {
   return { records, skippedRows };
 }
 
-function buildPoema(row, sourceFile, canonicalTestimonios) {
+function buildPoema(row, sourceFile, canonicalTestimonios, sourceFileTestimonios) {
   const record = normalizeRecord(row.record);
-  normalizeControlledFields(record, row, sourceFile);
+  normalizePoemaFields(record, row, sourceFile);
   const testimonioOriginal = record.testimonio;
-  const testimonioId = technicalId(testimonioOriginal);
-  const testimonioCanonico = canonicalTestimonios.get(testimonioId)?.testimonio;
+  const testimonioOriginalId = technicalId(testimonioOriginal);
+  const fallbackTestimonio = getSingleSourceTestimonio(sourceFile, sourceFileTestimonios);
+  const testimonioCanonico =
+    canonicalTestimonios.get(testimonioOriginalId)?.testimonio ?? fallbackTestimonio?.testimonio;
+  const testimonioId =
+    canonicalTestimonios.has(testimonioOriginalId) || !fallbackTestimonio
+      ? testimonioOriginalId
+      : fallbackTestimonio.id;
   const testimonioVisible = testimonioCanonico || testimonioOriginal;
   const orden = normalizeOrder(record.orden);
   const id = `${testimonioId || 'sin-testimonio'}-${padOrder(orden)}`;
@@ -327,11 +340,33 @@ function buildPoema(row, sourceFile, canonicalTestimonios) {
     source_row: row.rowNumber,
     ...record,
     search_incipit: normalizeSearch(record.incipit),
-    search_verso: normalizeSearch(record.segundo_verso),
-    search_autor: normalizeSearch(
-      [record.atribucion, record.autores_ficha, record.autores_transcripcion].join(' ')
+    search_verso: normalizeSearch(
+      [
+        record.incipit,
+        record.segundo_verso,
+        record.explicit,
+        record.incipit_desarrollo,
+        record.incipit_interno,
+        record.estribillo_entero,
+        record.transcripcion
+      ].join(' ')
     ),
-    search_general: normalizeSearch(Object.values(record).join(' ')),
+    search_autor: normalizeSearch([record.epigrafe, record.atribucion].join(' ')),
+    search_epigrafe: normalizeSearch(record.epigrafe),
+    search_estribillo: normalizeSearch(record.estribillo_entero),
+    search_general: normalizeSearch(
+      [
+        record.incipit,
+        record.segundo_verso,
+        record.explicit,
+        record.epigrafe,
+        record.atribucion,
+        record.incipit_desarrollo,
+        record.incipit_interno,
+        record.estribillo_entero,
+        record.transcripcion
+      ].join(' ')
+    ),
     sort_incipit: normalizeSearch(record.incipit)
   };
 
@@ -344,6 +379,11 @@ function buildPoema(row, sourceFile, canonicalTestimonios) {
   }
 
   return poema;
+}
+
+function getSingleSourceTestimonio(sourceFile, sourceFileTestimonios) {
+  const testimonios = sourceFileTestimonios.get(sourceFile) ?? [];
+  return testimonios.length === 1 ? testimonios[0] : undefined;
 }
 
 function recordCanonicalization({ campo, de, a, ejemplo_item_original, ejemplo_item_canonico }) {
@@ -445,7 +485,7 @@ function normalizeRecord(record) {
   );
 }
 
-function normalizeControlledFields(record, row, sourceFile) {
+function normalizePoemaFields(record, row, sourceFile) {
   for (const field of ['estructura_cabeza', 'estructura_interna', 'estribillo']) {
     if (record[field] === '') {
       record[field] = '—';
@@ -460,6 +500,31 @@ function normalizeControlledFields(record, row, sourceFile) {
       });
     }
   }
+
+  normalizeForma(record, row, sourceFile);
+}
+
+function normalizeForma(record, row, sourceFile) {
+  const normalizedForma = normalizeSearch(record.forma);
+  const formNormalizations = new Map([
+    ['cancion', 'canción (otras formas)'],
+    ['cancion an arte menor', 'canción en arte menor']
+  ]);
+  const normalizedValue = formNormalizations.get(normalizedForma);
+
+  if (!normalizedValue || record.forma === normalizedValue) {
+    return;
+  }
+
+  diagnostics.normalizations.push({
+    file: sourceFile,
+    row: row.rowNumber,
+    item: [record.testimonio, normalizeOrder(record.orden)].filter(Boolean).join('-'),
+    field: 'forma',
+    from: record.forma,
+    to: normalizedValue
+  });
+  record.forma = normalizedValue;
 }
 
 function cleanText(value) {
@@ -554,7 +619,7 @@ function applyLongFieldBreaks(value, field) {
     return value;
   }
 
-  return value.replace(/(?<!<)\s*\/\s*/g, '<br>').replace(/\s*\|\s*/g, '<br><br>');
+  return value.replace(/(?<!<)\s*\/\s*/g, '<br>').replace(/\s*[|ǀ]\s*/g, '<br><br>');
 }
 
 function escapeHtml(value) {
