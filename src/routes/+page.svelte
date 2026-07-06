@@ -1,16 +1,3 @@
-<script lang="ts">
-  import { onMount } from 'svelte';
-
-  let visitCount = 0;
-
-  onMount(() => {
-    const storageKey = 'repomit-home-visits';
-    const nextCount = Number(localStorage.getItem(storageKey) ?? '0') + 1;
-    localStorage.setItem(storageKey, String(nextCount));
-    visitCount = nextCount;
-  });
-</script>
-
 <section class="home-header">
   <h1>RePoMIt</h1>
   <p class="subtitle">
@@ -45,10 +32,6 @@
     repertorio por orden alfabético.
   </p>
 </section>
-
-<p class="visit-counter" aria-live="polite">
-  Visitas registradas en este navegador: <strong>{visitCount || '—'}</strong>
-</p>
 
 <nav class="featured-links" aria-label="Accesos principales">
   <a href="/busqueda">
@@ -85,12 +68,6 @@
   .intro {
     max-width: none;
     margin-top: 1.5rem;
-  }
-
-  .visit-counter {
-    margin: 1.25rem 0 0;
-    color: #6c6256;
-    font-size: 0.92rem;
   }
 
   .featured-links {
