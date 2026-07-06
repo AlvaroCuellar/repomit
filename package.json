@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run build:data && vite build",
     "preview": "vite preview",
     "build:data": "node scripts/build-repomit-data.mjs",
     "export:sheets": "node scripts/export-google-sheets-template.mjs",
