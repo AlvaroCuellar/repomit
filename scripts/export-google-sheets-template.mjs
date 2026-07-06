@@ -108,20 +108,64 @@ function addInstructionsSheet(workbook) {
   });
 
   sheet.columns = [
-    { key: 'a', width: 28 },
-    { key: 'b', width: 96 }
+    { key: 'a', width: 32 },
+    { key: 'b', width: 108 }
   ];
 
   sheet.addRows([
-    ['RePoMIt - hoja unica de edicion', ''],
-    ['Que es este archivo', 'Sube este XLSX a Google Drive y abrelo como Google Sheets. La hoja resultante es la unica fuente editable para la web.'],
-    ['Pestanas que lee la web', 'Testimonios, Poemas y Contenido web. No cambies esos nombres. Esta pestana de instrucciones no la lee la web.'],
-    ['Como enlazarla', 'Copia el ID de la URL de Google Sheets y configuralo como GOOGLE_SHEETS_ID en local o en Vercel.'],
-    ['Como probar en local', 'GOOGLE_SHEETS_ID="ID_DE_LA_HOJA" npm run build:data && npm run validate:data && npm run dev'],
-    ['Como publicar', 'En Vercel configura GOOGLE_SHEETS_ID y usa el Deploy Hook con el Apps Script de docs/apps-script-publicacion.js.'],
-    ['Formato de texto', 'Usa *cursiva*, **negrita**, [texto](/ruta) o [correo](mailto:correo@dominio).'],
-    ['Importante', 'Google Sheets por CSV no conserva cursivas visuales; por eso las cursivas deben marcarse con asteriscos.'],
-    ['Ciudad nueva', 'Si aparece una ciudad nueva en Testimonios, la web la aceptara, pero conviene añadir su coordenada al mapa.']
+    ['RePoMIt - guía rápida de edición', ''],
+    [
+      'Para qué sirve esta hoja',
+      'Esta hoja es la fuente de datos editable de RePoMIt. Los cambios que se hagan aquí pueden aparecer en la web cuando se publique una nueva versión.'
+    ],
+    [
+      'Pestañas que se pueden editar',
+      'Testimonios, Poemas y Contenido web. La pestaña Instrucciones es solo una ayuda; la web no la lee.'
+    ],
+    [
+      'Testimonios',
+      'Contiene la información de cada manuscrito: ciudad, institución, signatura, fecha, contenido, bibliografía y responsables de la ficha.'
+    ],
+    [
+      'Poemas',
+      'Contiene las composiciones catalogadas. Cada poema debe estar asociado a un testimonio existente en la pestaña Testimonios.'
+    ],
+    [
+      'Contenido web',
+      'Controla textos públicos de la web: portada, página de manuscritos, presentación y criterios. Es la pestaña más cómoda para corregir textos generales.'
+    ],
+    [
+      'Qué no tocar',
+      'No cambiar los nombres de las pestañas, no borrar la primera fila de encabezados y no renombrar las columnas. Si se cambia una sigla de testimonio, revisar también los poemas asociados.'
+    ],
+    [
+      'Cómo publicar cambios',
+      'Después de editar, usar el menú superior RePoMIt > Publicar ahora. Esto avisa a Vercel para reconstruir la web con los datos actuales de la hoja.'
+    ],
+    [
+      'Cuánto tarda',
+      'La actualización no es instantánea. Normalmente tarda entre 30 segundos y 1 minuto. Después conviene recargar la página pública de RePoMIt.'
+    ],
+    [
+      'Publicación automática',
+      'Si está activada, la hoja puede publicar después de editar. Aun así, hay una pausa de 5 minutos entre publicaciones para evitar demasiados despliegues seguidos.'
+    ],
+    [
+      'Formato de texto',
+      'Para cursiva usar *texto*. Para negrita usar **texto**. Para enlaces usar [texto](https://...) o [texto](/ruta-interna).'
+    ],
+    [
+      'Campos vacíos',
+      'Si un dato no existe o no procede, mantener el criterio ya usado en la tabla: celda vacía o guion largo según el campo. No inventar datos para evitar huecos.'
+    ],
+    [
+      'Antes de cambios grandes',
+      'Para añadir muchos poemas, testimonios nuevos o reorganizar siglas, conviene avisar primero para validar que la estructura sigue siendo coherente.'
+    ],
+    [
+      'Si algo no aparece en la web',
+      'Comprobar que se ha usado RePoMIt > Publicar ahora, esperar a que termine el despliegue y recargar la página. Si sigue sin aparecer, revisar que el cambio esté en la pestaña correcta.'
+    ]
   ]);
 
   sheet.getRow(1).font = { bold: true, size: 16, color: { argb: 'FFFFFFFF' } };
@@ -131,7 +175,7 @@ function addInstructionsSheet(workbook) {
   sheet.eachRow((row, rowNumber) => {
     row.alignment = { vertical: 'top', wrapText: true };
     if (rowNumber > 1) {
-      row.height = 42;
+      row.height = 58;
     }
   });
 }
