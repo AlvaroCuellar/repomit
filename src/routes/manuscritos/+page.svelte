@@ -275,6 +275,7 @@
     border: 1px solid #d8d0c2;
     background: rgb(255 254 251 / 96%);
     box-shadow: 0 0.5rem 1.4rem rgb(36 30 22 / 12%);
+    z-index: 2;
   }
 
   .city-panel h3 {
@@ -343,19 +344,23 @@
     }
 
     .italy-map {
-      aspect-ratio: auto;
+      width: min(100%, 22rem);
       min-height: 0;
+      margin-inline: auto;
     }
 
     .italy-map svg {
-      height: auto;
+      height: 100%;
     }
 
     .city-panel {
-      position: static;
+      left: 0.5rem;
+      right: 0.5rem;
+      top: auto;
+      bottom: 0.75rem;
       width: auto;
-      margin-top: 0.75rem;
-      box-shadow: none;
+      max-height: 42%;
+      overflow: auto;
     }
 
     dl {
