@@ -58,7 +58,7 @@
     }
 
     const present = new Set(numbers);
-    const min = Math.min(...numbers);
+    const min = Math.min(1, Math.min(...numbers));
     const max = Math.max(...numbers);
     const missing: number[] = [];
 
@@ -107,6 +107,10 @@
         <dt>Composiciones catalogadas</dt>
         <dd>{poemas.length}</dd>
       </div>
+      <div>
+        <dt>Fecha de última revisión</dt>
+        <dd>{display(testimonio.fecha_revision)}</dd>
+      </div>
     </dl>
   </header>
 
@@ -141,11 +145,6 @@
   </section>
 
   <section class="block">
-    <h2>Contenido</h2>
-    <div class="prose content-list">{@html htmlOrText(testimonio.contenido_html, testimonio.contenido)}</div>
-  </section>
-
-  <section class="block">
     <h2>Enlace</h2>
     {#if isExternalUrl(testimonio.enlace)}
       <p>
@@ -170,11 +169,15 @@
         <dt>Responsable(s) de la ficha</dt>
         <dd>{display(testimonio.autores_ficha)}</dd>
       </div>
+      <div>
+        <dt>Fecha de última revisión</dt>
+        <dd>{display(testimonio.fecha_revision)}</dd>
+      </div>
     </dl>
   </section>
 
   <section class="block">
-    <h2>Poemas asociados</h2>
+    <h2>Contenido (orden topográfico)</h2>
     {#if missingOrders.length > 0}
       <p class="note">
         La secuencia topográfica presenta saltos ({missingOrders.join(', ')}). Pueden corresponder
@@ -248,10 +251,6 @@
 
   .prose {
     line-height: 1.7;
-  }
-
-  .content-list {
-    max-width: 54rem;
   }
 
   .note {

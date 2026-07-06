@@ -42,6 +42,19 @@
     mode = 'exacta';
     appliedCriteria = null;
   }
+
+  function hasText(value: string | undefined) {
+    const normalized = String(value ?? '').trim();
+    return normalized !== '' && normalized !== '—' && normalized !== '-';
+  }
+
+  function isYes(value: string | undefined) {
+    return String(value ?? '')
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '') === 'si';
+  }
 </script>
 
 <h1>Búsqueda</h1>
@@ -67,7 +80,7 @@
   <label>
     Coincidencia
     <select bind:value={mode}>
-      <option value="exacta">exacta normalizada</option>
+      <option value="exacta">exacta</option>
       <option value="todas">todas las palabras</option>
       <option value="alguna">alguna palabra</option>
     </select>
@@ -124,10 +137,18 @@
               <dt>Segundo verso</dt>
               <dd>{result.poema.segundo_verso || '—'}</dd>
             </div>
-            <div class="wide">
-              <dt>Íncipit de la primera estrofa de desarrollo</dt>
-              <dd>{result.poema.incipit_desarrollo || '—'}</dd>
-            </div>
+            {#if isYes(result.poema.estructura_cabeza) && hasText(result.poema.incipit_desarrollo)}
+              <div class="wide">
+                <dt>Íncipit de la primera estrofa de desarrollo</dt>
+                <dd>{result.poema.incipit_desarrollo}</dd>
+              </div>
+            {/if}
+            {#if isYes(result.poema.estribillo) && hasText(result.poema.estribillo_entero)}
+              <div class="wide">
+                <dt>Estribillo(s)</dt>
+                <dd>{result.poema.estribillo_entero}</dd>
+              </div>
+            {/if}
             <div>
               <dt>Testimonio</dt>
               <dd>{result.poema.testimonio}</dd>

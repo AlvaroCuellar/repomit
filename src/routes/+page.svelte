@@ -1,3 +1,16 @@
+<script lang="ts">
+  import { onMount } from 'svelte';
+
+  let visitCount = 0;
+
+  onMount(() => {
+    const storageKey = 'repomit-home-visits';
+    const nextCount = Number(localStorage.getItem(storageKey) ?? '0') + 1;
+    localStorage.setItem(storageKey, String(nextCount));
+    visitCount = nextCount;
+  });
+</script>
+
 <section class="home-header">
   <h1>RePoMIt</h1>
   <p class="subtitle">
@@ -8,24 +21,34 @@
 
 <section class="intro">
   <p>
-    RePoMIt es un repertorio digital dedicado a la poesía en castellano conservada
-    en manuscritos italianos de los siglos XVI y XVII. La aplicación permite consultar
-    fichas de poemas y testimonios, así como recorrer el repertorio por orden alfabético.
+    RePoMIt es un repertorio digital dedicado a la poesía en castellano de los siglos
+    XVI y XVII copiada en manuscritos que se custodian en Italia.
   </p>
 
   <p>
-    El proyecto nace en el marco del seminario
-    <em>Corre manuscrita (in Italia): Fonti, metodi e strumenti per lo studio della poesia aurea</em>,
-    coordinado por Antonietta Molinaro, Università eCampus, con la participación de
-    Álvaro Cuéllar, Universitat Autònoma de Barcelona.
+    Se ha desarrollado en el marco del proyecto didáctico <em>Corre manuscrita
+    (en Italia): Fuentes, métodos y herramientas para el estudio de la poesía
+    áurea</em> (proyectos Fu.His.It. 2026), coordinado por Antonietta Molinaro,
+    Università eCampus, con la participación de Álvaro Cuéllar, Universitat
+    Autònoma de Barcelona y con el patrocinio del Instituto Cervantes, de las
+    asociaciones AISPI y AISI y de la Università eCampus (Italia).
   </p>
 
   <p>
     El repertorio trabaja con testimonios completos: las composiciones se ordenan según su
-    posición topográfica en cada manuscrito y se identifican mediante el ítem formado por
-    testimonio y orden.
+    posición topográfica en cada manuscrito y se identifican mediante un ítem formado por
+    el testimonio y el orden progresivo que la composición ocupa en él.
+  </p>
+
+  <p>
+    La aplicación permite consultar fichas de poemas y testimonios, así como recorrer el
+    repertorio por orden alfabético.
   </p>
 </section>
+
+<p class="visit-counter" aria-live="polite">
+  Visitas registradas en este navegador: <strong>{visitCount || '—'}</strong>
+</p>
 
 <nav class="featured-links" aria-label="Accesos principales">
   <a href="/busqueda">
@@ -60,8 +83,14 @@
   }
 
   .intro {
-    max-width: 50rem;
+    max-width: none;
     margin-top: 1.5rem;
+  }
+
+  .visit-counter {
+    margin: 1.25rem 0 0;
+    color: #6c6256;
+    font-size: 0.92rem;
   }
 
   .featured-links {

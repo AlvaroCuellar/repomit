@@ -50,6 +50,7 @@ export type Poema = {
 
 export type Testimonio = {
   id: string;
+  fecha_revision?: string;
   source_file: string;
   source_row: number;
   testimonio: string;

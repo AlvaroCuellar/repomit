@@ -1,7 +1,25 @@
 {
-  "generated_at": "2026-06-22T11:04:00.083Z",
+  "generated_at": "2026-07-06T16:36:39.225Z",
   "input_dir": "data/excel",
   "files": [
+    {
+      "file": "data/excel/NaN XVII.30 (ok).xlsx",
+      "ignored": false,
+      "reason": "",
+      "sheets": [
+        "Poemas",
+        "Testimonios"
+      ],
+      "detected_poemas_sheet": "Poemas",
+      "detected_testimonios_sheet": "Testimonios",
+      "poemas": 136,
+      "testimonios": 1,
+      "skipped_poema_rows": 1,
+      "skipped_testimonio_rows": 1,
+      "rich_text_cells": 38,
+      "italic_runs": 45,
+      "notes": []
+    },
     {
       "file": "data/excel/NaNB V.A.16 (okok).xlsx",
       "ignored": false,
@@ -12,12 +30,12 @@
       ],
       "detected_poemas_sheet": "Poemas",
       "detected_testimonios_sheet": "Testimonios",
-      "poemas": 71,
+      "poemas": 72,
       "testimonios": 1,
-      "skipped_poema_rows": 2,
+      "skipped_poema_rows": 1,
       "skipped_testimonio_rows": 1,
-      "rich_text_cells": 66,
-      "italic_runs": 43,
+      "rich_text_cells": 67,
+      "italic_runs": 51,
       "notes": []
     },
     {
@@ -76,13 +94,13 @@
     }
   ],
   "totals": {
-    "files_read": 3,
+    "files_read": 4,
     "files_ignored": 1,
-    "poemas": 161,
-    "testimonios": 3,
-    "rich_text_cells": 221,
-    "italic_runs": 122,
-    "html_fields": 1135,
+    "poemas": 298,
+    "testimonios": 4,
+    "rich_text_cells": 260,
+    "italic_runs": 175,
+    "html_fields": 2095,
     "controlled_blanks_normalized": 0
   },
   "normalizations": [
@@ -100,7 +118,7 @@
       "campo": "testimonio",
       "de": "NANB V.A.16",
       "a": "NaNB V.A.16",
-      "poemas_afectados": 71,
+      "poemas_afectados": 72,
       "ejemplo_item_original": "NANB V.A.16-1",
       "ejemplo_item_canonico": "NaNB V.A.16-1"
     },
@@ -116,21 +134,29 @@
   "notes": [],
   "informe": {
     "resumen": {
-      "numero_poemas": 161,
-      "numero_testimonios": 3,
-      "excel_leidos": 3,
+      "numero_poemas": 298,
+      "numero_testimonios": 4,
+      "excel_leidos": 4,
       "excel_ignorados": 1,
-      "celdas_richText_detectadas": 221,
-      "tramos_en_cursiva_detectados": 122
+      "celdas_richText_detectadas": 260,
+      "tramos_en_cursiva_detectados": 175
     },
     "testimonios": [
+      {
+        "id": "nan-xvii30",
+        "testimonio": "NaN XVII.30",
+        "ciudad": "Nápoles",
+        "institucion": "Biblioteca Nazionale di Napoli",
+        "signatura": "XVII.30",
+        "poemas_asociados": 136
+      },
       {
         "id": "nanb-va16",
         "testimonio": "NaNB V.A.16",
         "ciudad": "Nápoles",
         "institucion": "Biblioteca Nazionale di Napoli",
         "signatura": "Fondo Brancacciano, V A 16",
-        "poemas_asociados": 71
+        "poemas_asociados": 72
       },
       {
         "id": "rolc-44a16",
@@ -152,43 +178,51 @@
     "formas": {
       "listado": [
         {
-          "forma": "villancico",
-          "poemas": 49
-        },
-        {
           "forma": "canción en arte menor",
-          "poemas": 36
+          "poemas": 73
         },
         {
           "forma": "romance",
-          "poemas": 33
+          "poemas": 72
+        },
+        {
+          "forma": "villancico",
+          "poemas": 64
         },
         {
           "forma": "romancillo",
-          "poemas": 11
-        },
-        {
-          "forma": "octava real",
-          "poemas": 8
+          "poemas": 23
         },
         {
           "forma": "romance/romancillo con desfecha",
-          "poemas": 6
+          "poemas": 19
         },
         {
-          "forma": "polimetría",
-          "poemas": 4
+          "forma": "octava real",
+          "poemas": 9
         },
         {
           "forma": "canción petrarquista",
-          "poemas": 3
+          "poemas": 8
         },
         {
-          "forma": "estribote",
-          "poemas": 3
+          "forma": "soneto",
+          "poemas": 7
+        },
+        {
+          "forma": "canción (otras formas)",
+          "poemas": 6
         },
         {
           "forma": "glosa",
+          "poemas": 5
+        },
+        {
+          "forma": "polimetría",
+          "poemas": 5
+        },
+        {
+          "forma": "estribote",
           "poemas": 3
         },
         {
@@ -196,15 +230,11 @@
           "poemas": 2
         },
         {
-          "forma": "canción (otras formas)",
-          "poemas": 1
-        },
-        {
           "forma": "canción en arte mayor",
           "poemas": 1
         },
         {
-          "forma": "soneto",
+          "forma": "pareados",
           "poemas": 1
         }
       ],
@@ -216,11 +246,570 @@
     "siglas": {
       "variantes": [
         {
+          "id_tecnico": "nan-xvii30",
+          "variantes": [
+            {
+              "valor": "NaN XVII.30",
+              "apariciones": 137,
+              "fuentes": [
+                {
+                  "archivo": "testimonios.json",
+                  "registro": "nan-xvii30"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-006"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-007"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-008"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-009"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-010"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-011"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-012"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-013"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-014"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-015"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-016"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-017"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-018"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-019"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-020"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-021"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-022"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-023"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-024"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-025"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-026"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-027"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-028"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-029"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-030"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-031"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-032"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-033"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-034"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-035"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-036"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-037"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-038"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-039"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-041"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-042"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-043"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-044"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-045"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-046"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-047"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-048"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-049"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-050"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-051"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-052"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-053"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-054"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-055"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-056"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-057"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-058"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-059"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-060"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-061"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-062"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-063"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-064"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-065"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-066"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-067"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-068"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-069"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-070"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-071"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-072"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-073"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-074"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-075"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-076"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-077"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-078"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-079"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-080"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-081"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-082"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-083"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-084"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-085"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-088"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-089"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-090"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-091"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-092"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-093"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-094"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-095"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-097"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-098"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-099"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-100"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-101"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-102"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-103"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-104"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-107"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-108"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-109"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-110"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-111"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-113"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-114"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-115"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-116"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-120"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-122"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-123"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-124"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-125"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-126"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-130"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-131"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-132"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-133"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-134"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-135"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-144"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-145"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-150"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-152"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-153"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-154"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-155"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-178"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-180"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-181"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-182"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-183"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-184"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-187"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-188"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-189"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-190"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-191"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-217"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nan-xvii30-253"
+                }
+              ]
+            }
+          ]
+        },
+        {
           "id_tecnico": "nanb-va16",
           "variantes": [
             {
               "valor": "NaNB V.A.16",
-              "apariciones": 72,
+              "apariciones": 73,
               "fuentes": [
                 {
                   "archivo": "testimonios.json",
@@ -385,6 +974,10 @@
                 {
                   "archivo": "poemas.json",
                   "registro": "nanb-va16-040"
+                },
+                {
+                  "archivo": "poemas.json",
+                  "registro": "nanb-va16-041"
                 },
                 {
                   "archivo": "poemas.json",
@@ -911,7 +1504,7 @@
           "campo": "testimonio",
           "de": "NANB V.A.16",
           "a": "NaNB V.A.16",
-          "poemas_afectados": 71,
+          "poemas_afectados": 72,
           "ejemplo_item_original": "NANB V.A.16-1",
           "ejemplo_item_canonico": "NaNB V.A.16-1"
         },
@@ -945,7 +1538,7 @@
       "poemas_sin_campos": []
     },
     "html": {
-      "campos_html_generados": 1135,
+      "campos_html_generados": 2095,
       "etiquetas_permitidas": [
         "<em>",
         "</em>",
@@ -956,10 +1549,10 @@
     "errores": {
       "bloqueantes": [],
       "avisos_no_bloqueantes": [
-        "Testimonio canonicalizado en poemas: NANB V.A.16 -> NaNB V.A.16 (71 poema(s)).",
+        "Testimonio canonicalizado en poemas: NANB V.A.16 -> NaNB V.A.16 (72 poema(s)).",
         "Testimonio canonicalizado en poemas: RoLC 625 -> RoLC 44.A.16 (33 poema(s))."
       ]
     }
   },
-  "quality_report_generated_at": "2026-06-22T11:04:02.999Z"
+  "quality_report_generated_at": "2026-07-06T16:36:39.781Z"
 }

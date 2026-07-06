@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const excelDir = path.join(root, 'data', 'excel');
 const generatedDir = path.join(root, 'data', 'generated');
+const LAST_REVIEW_DATE = '6 de julio de 2026';
 
 const POEMA_FIELDS = [
   'incipit',
@@ -336,6 +337,7 @@ function buildPoema(row, sourceFile, canonicalTestimonios, sourceFileTestimonios
     item,
     title: record.incipit,
     testimonio_id: testimonioId,
+    fecha_revision: LAST_REVIEW_DATE,
     source_file: sourceFile,
     source_row: row.rowNumber,
     ...record,
@@ -408,6 +410,7 @@ function buildTestimonio(row, sourceFile) {
   const id = technicalId(record.testimonio);
   const testimonio = {
     id,
+    fecha_revision: LAST_REVIEW_DATE,
     source_file: sourceFile,
     source_row: row.rowNumber,
     ...record
@@ -421,15 +424,15 @@ function buildTestimonio(row, sourceFile) {
 }
 
 function readCell(cell, field) {
-  const text = cellToText(cell);
+  const text = cellToText(cell, field);
   const html = cellToHtml(cell, field);
   const richText = Array.isArray(cell.value?.richText);
   const italicRuns = richText ? cell.value.richText.filter((part) => part.font?.italic).length : 0;
   return { text, html, richText, italicRuns };
 }
 
-function cellToText(cell) {
-  return cleanText(cellValueToText(cell.value));
+function cellToText(cell, field) {
+  return cleanText(cellValueToText(cell.value, field, cell));
 }
 
 function cellToHtml(cell, field) {
@@ -444,10 +447,10 @@ function cellToHtml(cell, field) {
     return applyLongFieldBreaks(cleanHtmlText(html), field);
   }
 
-  return applyLongFieldBreaks(escapeHtml(cellToText(cell)), field);
+  return applyLongFieldBreaks(escapeHtml(cellToText(cell, field)), field);
 }
 
-function cellValueToText(value) {
+function cellValueToText(value, field, cell) {
   if (value == null) {
     return '';
   }
@@ -457,6 +460,10 @@ function cellValueToText(value) {
   }
 
   if (value instanceof Date) {
+    if (field === 'folios') {
+      return formatFolioDate(value, cell?.numFmt);
+    }
+
     return value.toISOString().slice(0, 10);
   }
 
@@ -465,18 +472,31 @@ function cellValueToText(value) {
   }
 
   if ('result' in value) {
-    return cellValueToText(value.result);
+    return cellValueToText(value.result, field, cell);
   }
 
   if ('text' in value) {
-    return cellValueToText(value.text);
+    return cellValueToText(value.text, field, cell);
   }
 
   if ('hyperlink' in value) {
-    return cellValueToText(value.hyperlink);
+    return cellValueToText(value.hyperlink, field, cell);
   }
 
   return String(value);
+}
+
+function formatFolioDate(value, numFmt = '') {
+  const day = value.getUTCDate();
+  const month = value.getUTCMonth() + 1;
+  const year = value.getUTCFullYear();
+  const normalizedFormat = normalizeSearch(numFmt);
+
+  if (normalizedFormat.includes('mmm') && normalizedFormat.includes('yy')) {
+    return `${month}-${String(year).slice(-2)}`;
+  }
+
+  return `${day}-${month}`;
 }
 
 function normalizeRecord(record) {
@@ -585,16 +605,13 @@ function isHeaderRow(values, fields) {
     return true;
   }
 
-  return normalized.filter(Boolean).some((value) => {
-    return (
-      value.includes('incipit') ||
-      value.includes('explicit') ||
-      value.includes('segundo verso') ||
-      value.includes('ciudad') ||
-      value.includes('institucion') ||
-      value.includes('signatura')
-    );
-  });
+  const matchingHeaderCells = normalized.filter((value) =>
+    expected.some(
+      (header) => header && (value === header || value.startsWith(`${header} `) || value.includes(header))
+    )
+  );
+
+  return matchingHeaderCells.length >= 2;
 }
 
 function isRealPoemaRow(record) {
