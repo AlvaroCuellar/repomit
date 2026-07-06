@@ -8,6 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "build:data": "node scripts/build-repomit-data.mjs",
+    "export:sheets": "node scripts/export-google-sheets-template.mjs",
     "validate:data": "node scripts/validate-repomit-data.mjs"
   },
   "devDependencies": {

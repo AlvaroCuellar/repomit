@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { poemas, testimonios } from '$lib/data/repomit';
+  import { poemas, site, testimonios } from '$lib/data/repomit';
 
   const manuscritos = [...testimonios].sort(
     (a, b) =>
@@ -83,9 +83,7 @@
 <h1>Manuscritos catalogados</h1>
 
 <p class="intro">
-  Esta sección reúne los testimonios manuscritos actualmente incorporados a RePoMIt.
-  Cada ficha incluye los datos codicológicos y bibliográficos disponibles, así como
-  el listado de composiciones catalogadas.
+  {@html site.manuscritos.intro}
 </p>
 
 <div class="summary" aria-label="Resumen de manuscritos catalogados">
@@ -96,10 +94,9 @@
 
 <section class="map-section" aria-labelledby="map-title">
   <div>
-    <h2 id="map-title">Custodia de los manuscritos</h2>
+    <h2 id="map-title">{site.manuscritos.mapTitle}</h2>
     <p>
-      Localización de las bibliotecas e instituciones que conservan los manuscritos
-      catalogados.
+      {@html site.manuscritos.mapDescription}
     </p>
   </div>
 

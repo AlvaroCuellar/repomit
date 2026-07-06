@@ -1,3 +1,7 @@
+<script lang="ts">
+  import { site } from '$lib/data/repomit';
+</script>
+
 <section class="home-header">
   <h1>RePoMIt</h1>
   <p class="subtitle">
@@ -7,30 +11,9 @@
 </section>
 
 <section class="intro">
-  <p>
-    RePoMIt es un repertorio digital dedicado a la poesía en castellano de los siglos
-    XVI y XVII copiada en manuscritos que se custodian en Italia.
-  </p>
-
-  <p>
-    Se ha desarrollado en el marco del proyecto didáctico <em>Corre manuscrita
-    (en Italia): Fuentes, métodos y herramientas para el estudio de la poesía
-    áurea</em> (proyectos Fu.His.It. 2026), coordinado por Antonietta Molinaro,
-    Università eCampus, con la participación de Álvaro Cuéllar, Universitat
-    Autònoma de Barcelona y con el patrocinio del Instituto Cervantes, de las
-    asociaciones AISPI y AISI y de la Università eCampus (Italia).
-  </p>
-
-  <p>
-    El repertorio trabaja con testimonios completos: las composiciones se ordenan según su
-    posición topográfica en cada manuscrito y se identifican mediante un ítem formado por
-    el testimonio y el orden progresivo que la composición ocupa en él.
-  </p>
-
-  <p>
-    La aplicación permite consultar fichas de poemas y testimonios, así como recorrer el
-    repertorio por orden alfabético.
-  </p>
+  {#each site.home.intro as paragraph}
+    <p>{@html paragraph}</p>
+  {/each}
 </section>
 
 <nav class="featured-links" aria-label="Accesos principales">

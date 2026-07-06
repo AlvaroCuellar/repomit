@@ -1,10 +1,10 @@
-# Plan futuro: Google Sheets
+# Plan: Google Sheets
 
-La versión local actual de RePoMIt usa archivos Excel en `data/excel/` como fuente de datos. Este flujo se mantiene por ahora para conservar control sobre la importación, la validación y los JSON generados.
+La versión local de RePoMIt mantiene los Excel de `data/excel/` como fuente por defecto. La prueba de Google Sheets ya esta implementada de forma optativa con `GOOGLE_SHEETS_ID`.
 
 ## Flujo previsto
 
-En una fase posterior, Antonietta editará los datos en Google Sheets. La hoja podrá mantener una estructura equivalente a los Excel actuales: una tabla para poemas y otra para testimonios.
+Antonietta podra editar los datos en Google Sheets. La hoja mantiene una estructura equivalente a los Excel actuales: una tabla para poemas, otra para testimonios y una tercera para los textos publicos de la web.
 
 Apps Script podrá encargarse de validar y publicar los datos. Ese script podría comprobar campos obligatorios, valores controlados, relaciones entre poemas y testimonios, y generar una salida JSON estable para la aplicación.
 
@@ -12,14 +12,14 @@ Vercel reconstruirá la web cuando haya datos publicados o cambios en el reposit
 
 ## Alcance de esta fase
 
-Este plan no implementa todavía la conexión con Google Sheets, Apps Script ni Vercel. Solo deja documentado el flujo futuro:
+El flujo implementado queda documentado en `docs/GOOGLE-SHEETS.md`:
 
 1. Edición académica en Google Sheets.
 2. Validación/publicación mediante Apps Script.
 3. Generación de JSON.
 4. Reconstrucción de RePoMIt en Vercel.
 
-Hasta que se implemente ese flujo, la fuente de verdad seguirá siendo `data/excel/` y los comandos locales:
+Si no se define `GOOGLE_SHEETS_ID`, la fuente de verdad sigue siendo `data/excel/` y los comandos locales:
 
 ```bash
 npm run build:data

@@ -1,5 +1,6 @@
 {
-  "generated_at": "2026-07-06T16:36:39.225Z",
+  "generated_at": "2026-07-06T17:27:01.653Z",
+  "data_source": "excel",
   "input_dir": "data/excel",
   "files": [
     {
@@ -1554,5 +1555,5 @@
       ]
     }
   },
-  "quality_report_generated_at": "2026-07-06T16:36:39.781Z"
+  "quality_report_generated_at": "2026-07-06T17:27:02.016Z"
 }

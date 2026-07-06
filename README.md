@@ -1,6 +1,6 @@
 # RePoMIt
 
-RePoMIt es una aplicación SvelteKit para un repertorio digital de poesía áurea conservada en manuscritos italianos. En esta fase, los datos se importan desde archivos Excel locales y se publican como JSON estáticos consumidos por la web.
+RePoMIt es una aplicación SvelteKit para un repertorio digital de poesía áurea conservada en manuscritos italianos. Los datos se importan desde archivos Excel locales o, si se configura `GOOGLE_SHEETS_ID`, desde Google Sheets. Después se publican como JSON estáticos consumidos por la web.
 
 ## Estructura del proyecto
 
@@ -17,6 +17,7 @@ RePoMIt es una aplicación SvelteKit para un repertorio digital de poesía áure
 ```bash
 npm install
 npm run build:data
+npm run export:sheets
 npm run validate:data
 npm run dev
 npm run build
@@ -26,7 +27,16 @@ npm run build
 
 - `data/generated/poemas.json`
 - `data/generated/testimonios.json`
+- `data/generated/site.json`
 - `data/generated/diagnostico.json`
+
+Si se ejecuta con `GOOGLE_SHEETS_ID`, el importador lee las pestañas `Poemas`, `Testimonios` y `Contenido web` de Google Sheets en lugar de los Excel locales:
+
+```bash
+GOOGLE_SHEETS_ID="ID_DE_LA_HOJA" npm run build:data
+```
+
+`npm run export:sheets` genera un único `.xlsx` de partida para importarlo en Google Drive como una sola Google Sheet con varias pestañas. El flujo completo está explicado en `docs/GOOGLE-SHEETS.md`.
 
 `npm run validate:data` revisa la integridad de los JSON generados y completa el diagnóstico con un informe de calidad.
 
@@ -55,6 +65,6 @@ npm run dev
 
 Este archivo debe revisarse después de cada importación porque permite detectar problemas de catalogación, variantes de siglas, campos vacíos o inconsistencias entre poemas y testimonios.
 
-## Datos futuros en Google Sheets
+## Datos en Google Sheets
 
-La versión actual usa Excel locales en `data/excel/`. En una fase posterior, los datos podrán pasar a Google Sheets para facilitar la edición colaborativa. El flujo previsto está documentado en `docs/PLAN-GOOGLE-SHEETS.md`.
+La prueba de edición desde Google Sheets está implementada de forma optativa. En local y producción se activa con la variable `GOOGLE_SHEETS_ID`; si no existe, la fuente de verdad sigue siendo `data/excel/`.

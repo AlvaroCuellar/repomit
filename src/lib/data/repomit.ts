@@ -1,4 +1,5 @@
 import poemasRaw from '../../../data/generated/poemas.json';
+import siteRaw from '../../../data/generated/site.json';
 import testimoniosRaw from '../../../data/generated/testimonios.json';
 
 export type Poema = {
@@ -67,7 +68,27 @@ export type Testimonio = {
   bibliografia_html: string;
 };
 
+export type SiteSection = {
+  key: string;
+  title: string;
+  paragraphs: string[];
+};
+
+export type SiteContent = {
+  home: {
+    intro: string[];
+  };
+  manuscritos: {
+    intro: string;
+    mapTitle: string;
+    mapDescription: string;
+  };
+  presentacion: SiteSection[];
+  criterios: SiteSection[];
+};
+
 export const poemas = poemasRaw as Poema[];
+export const site = siteRaw as SiteContent;
 export const testimonios = testimoniosRaw as Testimonio[];
 
 export function getPoema(id: string) {
