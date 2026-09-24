@@ -1,6 +1,6 @@
 /** Only known public pages can contribute; queries and record IDs are never stored. */
 export function isPublicPage(pathname: string): boolean {
-  return /^\/(?:presentacion|criterios|manuscritos|repertorio|busqueda)?\/?$/.test(pathname) ||
+  return /^\/(?:presentacion|criterios|como-citar|manuscritos|repertorio|busqueda)?\/?$/.test(pathname) ||
     /^\/(?:poemas|testimonios)\/[^/?#]{1,180}\/?$/.test(pathname);
 }
 

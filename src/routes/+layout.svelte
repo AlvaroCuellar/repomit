@@ -18,6 +18,7 @@
     <a href="/manuscritos">Manuscritos</a>
     <a href="/repertorio">Repertorio</a>
     <a href="/busqueda">Búsqueda</a>
+    <a href="/como-citar">Cómo citar</a>
   </nav>
 </header>
 
