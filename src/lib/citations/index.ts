@@ -2,6 +2,7 @@ import { escapeText, type Poema, type Testimonio } from '../data/repomit.ts';
 
 export const repertoryTitle =
   'RePoMIt. Repertorio de la poesía en castellano en manuscritos italianos';
+const repertoryDirector = 'Antonietta Molinaro (dir.)';
 const present = (value?: string) => value?.trim() && !['—', '-'].includes(value.trim());
 
 export function recordCitation(
@@ -11,13 +12,15 @@ export function recordCitation(
   consulted: string
 ) {
   const author = present(record.autores_ficha) ? `${record.autores_ficha.trim()}. ` : '';
-  const title = kind === 'poemas' ? (record as Poema).incipit : `Manuscrito ${record.testimonio}`;
+  const title = kind === 'poemas'
+    ? (record as Poema).incipit
+    : `${record.testimonio}: ${(record as Testimonio).ciudad}, ${(record as Testimonio).institucion}, ${(record as Testimonio).signatura}`;
   const item = kind === 'poemas' ? `Ítem ${(record as Poema).item}. ` : '';
   const revision = present(record.fecha_revision)
     ? `Última revisión: ${record.fecha_revision}. `
     : '';
   const url = new URL(`/${kind}/${encodeURIComponent(record.id)}`, origin).href;
-  return `${author}«${title}», en ${repertoryTitle}. ${item}${revision}${url} [consulta: ${consulted}].`;
+  return `${author}«${title}», ${item}en ${repertoryDirector}, ${repertoryTitle}. ${revision}${url} [consulta: ${consulted}].`;
 }
 
 /** Editable proposal: actual ficha authors are distinct from the poem's attribution. */

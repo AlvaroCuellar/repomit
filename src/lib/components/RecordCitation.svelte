@@ -25,10 +25,6 @@
 <details class="citation-box">
   <summary>Cómo citar esta ficha</summary>
   <p class="citation">{citation}</p>
-  <p class="help">
-    La cita identifica a los responsables de la ficha. Si utilizas la transcripción, reconoce
-    también a sus responsables cuando consten.
-  </p>
   <button type="button" on:click={copy}>Copiar cita</button>
   <span role="status">{feedback}</span>
 </details>
@@ -47,10 +43,6 @@
   }
   .citation {
     overflow-wrap: anywhere;
-  }
-  .help {
-    color: #4c463d;
-    font-size: 0.9rem;
   }
   button {
     font: inherit;

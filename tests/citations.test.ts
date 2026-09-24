@@ -26,9 +26,17 @@ test('citation uses ficha responsibility, stable ID and revision rather than poe
 });
 
 test('missing bibliographic data is omitted; editorial proposal is portable between domains', () => {
-  const record = { id: 'ms-1', testimonio: 'RaC 263', autores_ficha: '—' } as Testimonio;
+  const record = {
+    id: 'ms-1',
+    testimonio: 'RaC 263',
+    ciudad: 'Rávena',
+    institucion: 'Biblioteca Classense',
+    signatura: '263',
+    autores_ficha: '—'
+  } as Testimonio;
   const cite = recordCitation('testimonios', record, 'https://example.org', 'hoy');
-  assert.ok(cite.startsWith('«Manuscrito RaC 263»'));
+  assert.ok(cite.startsWith('«RaC 263: Rávena, Biblioteca Classense, 263»'));
+  assert.ok(cite.includes('en Antonietta Molinaro (dir.)'));
   assert.ok(!cite.includes('Última revisión:'));
   const section = citationSection('https://nuevo.example');
   assert.equal(section.pagina, 'presentacion');
