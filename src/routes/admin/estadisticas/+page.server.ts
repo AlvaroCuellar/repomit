@@ -1,2 +1,3 @@
 import { consultationStatistics } from '$lib/server/statistics';
-export const load = async () => ({ statistics: await consultationStatistics() });
+import { visitStatistics } from '$lib/server/visits';
+export const load = async () => ({ statistics: await consultationStatistics(), visits: await visitStatistics() });

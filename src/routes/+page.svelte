@@ -4,11 +4,14 @@
 </script>
 
 <section class="home-header">
+  <div class="home-title">
   <h1>RePoMIt</h1>
   <p class="subtitle">
     <strong>Re</strong>pertorio de la <strong>po</strong>esía en castellano en
     <strong>m</strong>anuscritos <strong>it</strong>alianos
   </p>
+  </div>
+
 </section>
 
 <section class="intro">
@@ -32,11 +35,39 @@
   </a>
 </nav>
 
+<div class="visits-area">
+  {#if data.publicStatistics}
+    <div class="visitor-counter">
+      <strong>{data.publicStatistics.total.toLocaleString('es-ES')}</strong>
+      <span class="counter-label">Visitas al repertorio</span>
+    </div>
+  {/if}
+</div>
+
 <style>
+  .visits-area { display: flex; justify-content: flex-end; margin: 0 0 1.5rem; }
   .home-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid #e4dfd4;
   }
+
+  .home-title { min-width: 0; }
+  .visitor-counter {
+    width: max-content;
+    max-width: 100%;
+    display: flex;
+    align-items: baseline;
+    gap: .4rem;
+    border-left: 1px solid #d8ceb9;
+    padding: .25rem 0 .25rem .8rem;
+    color: #61513a;
+  }
+  .visitor-counter strong { font-size: 1rem; font-weight: 500; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .counter-label { font-size: .8rem; }
 
   .subtitle {
     margin: 0;
@@ -77,6 +108,9 @@
   }
 
   @media (max-width: 760px) {
+    .home-header { flex-direction: column; align-items: stretch; gap: 1.2rem; }
+    .visitor-counter { flex-basis: auto; padding-left: 1rem; }
+    .visitor-counter strong { font-size: 1rem; }
     .featured-links {
       grid-template-columns: 1fr;
     }

@@ -1,5 +1,4 @@
 <script lang="ts">
-  export let statistics: { total: number; firstSeen: string | null } | null = null;
   import InstitutionalLogos from '$lib/components/InstitutionalLogos.svelte';
 </script>
 
@@ -34,35 +33,11 @@
         https://repomit.vercel.app
       </a>
     </div>
-    {#if statistics}
-      <p class="public-counter">
-        <strong>{statistics.total.toLocaleString('es-ES')} páginas consultadas</strong>
-        {#if statistics.firstSeen}
-          · desde el {new Date(statistics.firstSeen).toLocaleDateString('es-ES', {
-            timeZone: 'UTC',
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          })}
-        {:else}
-          · contador recién activado
-        {/if}
-        <span>Consultas de páginas, no visitantes únicos.</span>
-      </p>
-    {/if}
     <div class="editor-access"><a href="/admin" aria-label="Acceso de edición">Edición</a></div>
   </div>
 </footer>
 
 <style>
-  .public-counter {
-    margin-top: 1rem;
-  }
-  .public-counter span {
-    display: block;
-    font-size: 0.8rem;
-    margin-top: 0.15rem;
-  }
   .editor-access {
     margin-top: 0.9rem;
     text-align: right;

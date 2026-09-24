@@ -39,7 +39,7 @@ La fecha de revisión se actualiza al publicar. Los saltos de numeración son v�
 
 En **Edición → Mapa** se elige una ciudad y se coloca su punto pulsando sobre el mapa, con vista previa antes de guardar. Las flechas del teclado y las coordenadas ofrecen alternativas. Las ciudades desconocidas quedan pendientes de ubicación, nunca se sitúan en un punto arbitrario.
 
-El pie público muestra el total de páginas consultadas y desde cuándo se cuentan. **Edición → Estadísticas** conserva el desglose diario privado. Se cuentan consultas, no visitantes únicos; no se reconstruyen visitas anteriores ni se guardan IP, identificadores personales o búsquedas. Las sumas persisten en la base de datos.
+La portada muestra el total de visitas al sitio, al final del contenido de inicio, con solo el número y «Visitas al repertorio», sin desplegables. Se cuenta una visita por sesión de pestaña mediante una marca sin identificadores en `sessionStorage`; navegar o recargar no suma visitas. No equivale a personas únicas. **Edición → Estadísticas** muestra las visitas y conserva por separado el desglose diario de páginas consultadas. El nuevo contador de visitas empieza desde cero, sin convertir páginas históricas en visitas. No utiliza cookies ni guarda IP, identificadores personales o búsquedas; las sumas persisten en la base de datos.
 
 Las fichas ofrecen una cita copiable. En **Textos de la web** se puede preparar una sección independiente «Cómo citar el repertorio», revisar el modelo y publicarlo sin sustituir los apartados existentes.
 

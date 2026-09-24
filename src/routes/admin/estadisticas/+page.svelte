@@ -7,7 +7,22 @@
 </script>
 
 <svelte:head><title>Estadísticas · RePoMIt</title></svelte:head>
-<h1>Consultas del repertorio</h1>
+<h1>Estadísticas del repertorio</h1>
+<section class="panel visit-summary">
+  <h2>Visitas al repertorio</h2>
+  <p><strong>{number(data.visits.total)}</strong> en total · {number(data.visits.today)} hoy · {number(data.visits.last30Days)} en los últimos 30 días.</p>
+  <p>Este es el contador público de la portada. Registra una visita por sesión de pestaña, desde cualquier página pública. Navegar y recargar en esa pestaña no suman visitas. No identifica personas únicas: una misma persona puede abrir varias sesiones.</p>
+  <p>Solo se guarda una marca temporal en sessionStorage del navegador, sin identificadores ni cookies. Las visitas anteriores a su activación no se convierten a partir del total de páginas.</p>
+  {#if data.visits.firstSeen}<p class="help">Primera visita registrada: {date(data.visits.firstSeen)}.</p>{/if}
+  {#if data.visits.days.length}
+    <h3>Visitas diarias</h3>
+    <p class="help">Últimos 30 días, según UTC.</p>
+    <table><thead><tr><th scope="col">Fecha</th><th scope="col">Visitas</th></tr></thead>
+      <tbody>{#each data.visits.days as day}<tr><td>{date(day.day)}</td><td>{number(day.total)}</td></tr>{/each}</tbody>
+    </table>
+  {/if}
+</section>
+<h2>Páginas consultadas</h2>
 <p>Este contador registra páginas consultadas, no personas ni visitantes únicos. Una persona puede consultar varias páginas o volver a cargar una misma página.</p>
 {#if data.statistics.firstSeen}
   <p class="help">Primera consulta registrada: {date(data.statistics.firstSeen)}. No se incluyen visitas anteriores a la activación del contador.</p>

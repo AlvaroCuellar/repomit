@@ -25,7 +25,7 @@
   {@render children()}
 </main>
 
-<Footer statistics={data.publicStatistics} />
+<Footer />
 <PublicPageCounter />
 
 <style>

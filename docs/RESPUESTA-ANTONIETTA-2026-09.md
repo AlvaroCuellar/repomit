@@ -10,7 +10,7 @@ Los párrafos de Portada, Presentación y Criterios comparten tipografía, tama�
 
 ## Consultas
 
-El pie de todas las páginas muestra públicamente el total de páginas consultadas y la fecha inicial del recuento. **Edición → Estadísticas** conserva el desglose privado y muestra el total de páginas consultadas, las consultas de hoy y de los últimos treinta días y la fecha de la primera consulta registrada. El contador empieza con su activación: no reconstruye visitas anteriores ni presenta consultas como visitantes únicos. No añade cookies ni guarda direcciones IP, identificadores de personas, términos de búsqueda o historiales individuales. Excluye el área privada, al equipo con sesión abierta y los robots identificables.
+La portada muestra públicamente un contador general de visitas al final del contenido de inicio, con solo el número y «Visitas al repertorio», sin desplegables. Registra una visita por sesión de pestaña, aunque se consulten varias páginas o se recarguen; no representa personas únicas. **Edición → Estadísticas** muestra las visitas (total, hoy y últimos treinta días) y conserva por separado el desglose diario de páginas consultadas. No se convierten los antiguos totales de páginas en visitas. La marca de sesión se guarda en `sessionStorage`, sin identificadores ni cookies; el servidor solo conserva sumas diarias. No guarda IP, términos de búsqueda o historiales individuales. Excluye el área privada, al equipo con sesión abierta y los robots identificables.
 
 ## Cómo citar
 

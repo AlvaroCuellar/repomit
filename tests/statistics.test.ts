@@ -8,6 +8,7 @@ const folder = mkdtempSync(join(tmpdir(), 'repomit-statistics-'));
 process.env.REPOMIT_DB = join(folder, 'test.sqlite');
 if (process.env.DATABASE_URL) throw new Error('Run this test without DATABASE_URL.');
 const { db } = await import('../src/lib/server/database.ts');
+const { recordVisit, visitStatistics } = await import('../src/lib/server/visits.ts');
 const { recordConsultation, consultationStatistics } = await import('../src/lib/server/statistics.ts');
 after(() => { db.close(); rmSync(folder, { recursive: true, force: true }); });
 
@@ -42,4 +43,13 @@ test('persistent daily aggregation starts empty and computes calendar window wit
   assert.equal(stats.days.length, 2);
   assert.equal(db.prepare('SELECT total FROM page_consultations WHERE day = ?').get('2026-09-24')?.total, 2);
   assert.deepEqual(db.prepare('PRAGMA table_info(page_consultations)').all().map(row => row.name), ['day', 'total', 'first_seen']);
+});
+
+
+test('visit totals start independently of historical page consultations', async () => {
+  assert.equal((await visitStatistics()).total, 0);
+  const before = (await consultationStatistics()).total;
+  await recordVisit();
+  assert.equal((await visitStatistics()).total, 1);
+  assert.equal((await consultationStatistics()).total, before);
 });
