@@ -107,9 +107,6 @@
           </ul>
         </div>
       {/if}
-      <p class="map-credit">
-        Cartografía: <a href="https://www.naturalearthdata.com/">Natural Earth</a>.
-      </p>
     </div>
   </section>
 {/if}
@@ -181,10 +178,6 @@
     margin-top: 0;
   }
 
-  .map-credit {
-    font-size: 0.75rem;
-    color: #6c6256;
-  }
   .selected-city {
     padding: 0.75rem;
     border: 1px solid #d8d0c2;
