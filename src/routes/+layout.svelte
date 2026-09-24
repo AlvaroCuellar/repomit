@@ -1,15 +1,13 @@
 <script lang="ts">
   import Footer from '$lib/components/Footer.svelte';
+  import PublicPageCounter from '$lib/components/PublicPageCounter.svelte';
 
-  let { children } = $props();
+  let { children, data } = $props();
 </script>
 
 <svelte:head>
   <title>RePoMIt</title>
-  <meta
-    name="description"
-    content="Repertorio digital de poesía áurea en manuscritos italianos"
-  />
+  <meta name="description" content="Repertorio digital de poesía áurea en manuscritos italianos" />
 </svelte:head>
 
 <header class="site-header">
@@ -27,7 +25,8 @@
   {@render children()}
 </main>
 
-<Footer />
+<Footer statistics={data.publicStatistics} />
+<PublicPageCounter />
 
 <style>
   :global(body) {
@@ -35,7 +34,12 @@
     color: #23201d;
     background: #fbfaf7;
     font-family:
-      Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      Inter,
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
       sans-serif;
   }
 
@@ -56,6 +60,13 @@
 
   :global(p) {
     line-height: 1.6;
+  }
+
+  :global(.paragraph) {
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 1em 0;
   }
 
   .site-header {

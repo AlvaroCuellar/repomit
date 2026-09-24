@@ -1,18 +1,25 @@
 <script lang="ts">
+  import RecordCitation from '$lib/components/RecordCitation.svelte';
   import { page } from '$app/stores';
-  import { getPoemasByTestimonio, getTestimonio, testimonios, type Testimonio } from '$lib/data/repomit';
+  import { escapeText, resolveRecordId, type Testimonio, type Poema } from '$lib/data/repomit';
+  export let data;
+  $: testimonios = data.testimonios;
 
-  const sortedTestimonios = [...testimonios].sort(
+  $: sortedTestimonios = [...testimonios].sort(
     (a, b) =>
       a.ciudad.localeCompare(b.ciudad, 'es') ||
       a.institucion.localeCompare(b.institucion, 'es') ||
       a.testimonio.localeCompare(b.testimonio, 'es')
   );
 
-  $: id = $page.params.id;
-  $: testimonio = getTestimonio(id);
-  $: poemas = testimonio ? sortPoemasByOrden(getPoemasByTestimonio(testimonio.id)) : [];
-  $: currentIndex = testimonio ? sortedTestimonios.findIndex((entry) => entry.id === testimonio.id) : -1;
+  $: id = $page.params.id || '';
+  $: testimonio = testimonios.find((entry) => entry.id === resolveRecordId(id));
+  $: poemas = testimonio
+    ? sortPoemasByOrden(data.poemas.filter((entry) => entry.testimonio_id === testimonio.id))
+    : [];
+  $: currentIndex = testimonio
+    ? sortedTestimonios.findIndex((entry) => entry.id === testimonio.id)
+    : -1;
   $: previousTestimonio = currentIndex > 0 ? sortedTestimonios[currentIndex - 1] : undefined;
   $: nextTestimonio =
     currentIndex >= 0 && currentIndex < sortedTestimonios.length - 1
@@ -30,14 +37,14 @@
   }
 
   function htmlOrText(html: string | undefined, text: string | undefined) {
-    return hasText(html) ? html : display(text);
+    return hasText(html) ? html : escapeText(display(text));
   }
 
   function isExternalUrl(value: string | undefined) {
     return /^https?:\/\//i.test(String(value ?? '').trim());
   }
 
-  function sortPoemasByOrden(entries: ReturnType<typeof getPoemasByTestimonio>) {
+  function sortPoemasByOrden(entries: Poema[]) {
     return [...entries].sort((a, b) => {
       const aNumber = Number(a.orden);
       const bNumber = Number(b.orden);
@@ -46,7 +53,9 @@
         return aNumber - bNumber;
       }
 
-      return a.orden.localeCompare(b.orden, 'es') || a.sort_incipit.localeCompare(b.sort_incipit, 'es');
+      return (
+        a.orden.localeCompare(b.orden, 'es') || a.sort_incipit.localeCompare(b.sort_incipit, 'es')
+      );
     });
   }
 
@@ -159,7 +168,9 @@
 
   <section class="block">
     <h2>Bibliografía</h2>
-    <div class="prose">{@html htmlOrText(testimonio.bibliografia_html, testimonio.bibliografia)}</div>
+    <div class="prose">
+      {@html htmlOrText(testimonio.bibliografia_html, testimonio.bibliografia)}
+    </div>
   </section>
 
   <section class="block">
@@ -180,8 +191,8 @@
     <h2>Contenido (orden topográfico)</h2>
     {#if missingOrders.length > 0}
       <p class="note">
-        La secuencia topográfica presenta saltos ({missingOrders.join(', ')}). Pueden corresponder
-        a composiciones en otras lenguas o materiales no incorporados al repertorio.
+        La secuencia topográfica presenta saltos ({missingOrders.join(', ')}). Pueden corresponder a
+        composiciones en otras lenguas o materiales no incorporados al repertorio.
       </p>
     {/if}
 
@@ -204,6 +215,7 @@
       {/each}
     </div>
   </section>
+  <RecordCitation kind="testimonios" record={testimonio} />
 {:else}
   <nav class="page-nav" aria-label="Navegación de testimonio">
     <a href="/manuscritos">Volver a manuscritos</a>

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { site } from '$lib/data/repomit';
+  export let data;
+  $: ({ site } = data);
 </script>
 
 <section class="home-header">
@@ -12,7 +13,7 @@
 
 <section class="intro">
   {#each site.home.intro as paragraph}
-    <p>{@html paragraph}</p>
+    <div class="paragraph">{@html paragraph}</div>
   {/each}
 </section>
 

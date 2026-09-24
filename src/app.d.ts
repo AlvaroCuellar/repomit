@@ -1,5 +1,9 @@
+import type { User } from '$lib/server/auth';
 declare global {
-  namespace App {}
+  namespace App {
+    interface Locals {
+      user: User | null;
+    }
+  }
 }
-
 export {};

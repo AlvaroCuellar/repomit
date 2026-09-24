@@ -74,8 +74,15 @@ incipit, segundo_verso, explicit, testimonio, orden, folios, epigrafe, atribucio
 En `Testimonios` puede modificar los datos de cada manuscrito:
 
 ```text
-testimonio, ciudad, institucion, signatura, recopilador, fecha, contenido, enlace, bibliografia, autores_ficha
+testimonio, ciudad, institucion, signatura, recopilador, fecha, enlace, bibliografia, autores_ficha
 ```
+
+El antiguo campo `contenido` ya no es necesario: la sección «Contenido (orden topográfico)»
+de cada testimonio se genera automáticamente a partir de las filas de `Poemas`. El importador
+sigue aceptando hojas antiguas que conserven esa columna, pero la ignora en la interfaz pública.
+
+La sigla escrita en `Testimonios` es la forma canónica. El Apps Script sincroniza un cambio de
+sigla con todas las filas asociadas de `Poemas`, por lo que no hay que corregirlas una a una.
 
 En `Contenido web` puede modificar textos publicos de portada, manuscritos, presentacion y criterios:
 
@@ -119,6 +126,26 @@ Con esto, Antonietta tendra en Google Sheets:
 - `RePoMIt > Activar publicacion automatica`
 
 La publicacion automatica incluye una espera de 5 minutos entre publicaciones para no lanzar un despliegue por cada correccion menor.
+
+La primera vez que una cuenta ejecuta el script, Google solicita autorización y puede mostrar
+el aviso de aplicación no verificada. Para este script de uso interno, la autorización se concede
+una sola vez por cuenta y no se repite en cada edición, salvo que cambien los permisos solicitados
+o se revoque el acceso. El script incluye `@OnlyCurrentDoc` para limitar el acceso a esta hoja.
+Eliminar por completo el aviso requeriría un proyecto estándar de Google Cloud y completar el
+proceso de verificación OAuth de Google.
+
+## Añadir un testimonio preparado en Excel
+
+No hay que importar el libro completo ni sustituir las pestañas:
+
+1. En la hoja `Testimonios` del Excel, copiar únicamente la fila de datos del manuscrito y pegarla
+   como nueva fila en la pestaña `Testimonios` de Google Sheets.
+2. En la hoja `Poemas` del Excel, copiar todas las filas de poemas con datos, sin la cabecera, y
+   pegarlas al final de la pestaña `Poemas`.
+3. Comprobar que la sigla del testimonio coincide y que los números de orden no están duplicados.
+4. Usar `RePoMIt > Publicar ahora` y revisar la web después del despliegue.
+
+No hay inconveniente técnico en esperar hasta agosto para incorporar los dos testimonios pendientes.
 
 ## Limites de esta prueba
 

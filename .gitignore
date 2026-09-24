@@ -8,3 +8,12 @@ dist/
 .vercel/
 
 data/excel/~$*.xlsx
+
+.local/
+.env
+.env.*
+!.env.example
+playwright-report/
+test-results/
+.vercel
+.env*

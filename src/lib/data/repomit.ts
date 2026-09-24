@@ -1,7 +1,3 @@
-import poemasRaw from '../../../data/generated/poemas.json';
-import siteRaw from '../../../data/generated/site.json';
-import testimoniosRaw from '../../../data/generated/testimonios.json';
-
 export type Poema = {
   id: string;
   item: string;
@@ -87,23 +83,9 @@ export type SiteContent = {
   criterios: SiteSection[];
 };
 
-export const poemas = poemasRaw as Poema[];
-export const site = siteRaw as SiteContent;
-export const testimonios = testimoniosRaw as Testimonio[];
-
-export function getPoema(id: string) {
-  return poemas.find((poema) => poema.id === id);
+export function resolveRecordId(id: string) {
+  const previousId = 'rolc-44a16', currentId = 'rolc-625';
+  return id === previousId || id.startsWith(`${previousId}-`) ? `${currentId}${id.slice(previousId.length)}` : id;
 }
 
-export function getTestimonio(id: string) {
-  return testimonios.find((testimonio) => testimonio.id === id);
-}
-
-export function getTestimoniosByPoema(poemaId: string) {
-  const poema = getPoema(poemaId);
-  return poema ? testimonios.filter((testimonio) => testimonio.id === poema.testimonio_id) : [];
-}
-
-export function getPoemasByTestimonio(testimonioId: string) {
-  return poemas.filter((poema) => poema.testimonio_id === testimonioId);
-}
+export function escapeText(value: string | undefined) { return (value ?? '—').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { site } from '$lib/data/repomit';
+  export let data;
+  $: ({ site } = data);
 </script>
 
 <h1>Criterios de catalogación</h1>
@@ -8,7 +9,7 @@
   <section>
     <h2>{section.title}</h2>
     {#each section.paragraphs as paragraph}
-      <p>{@html paragraph}</p>
+      <div class="paragraph">{@html paragraph}</div>
     {/each}
   </section>
 {/each}

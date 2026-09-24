@@ -1,4 +1,5 @@
 <script lang="ts">
+  export let statistics: { total: number; firstSeen: string | null } | null = null;
   import InstitutionalLogos from '$lib/components/InstitutionalLogos.svelte';
 </script>
 
@@ -19,9 +20,7 @@
           alvarocuellar.com
         </a>
       </p>
-      <p>
-        Con el patrocinio de: Instituto Cervantes · AISPI · AISI · Università eCampus / DiSUS
-      </p>
+      <p>Con el patrocinio de: Instituto Cervantes · AISPI · AISI · Università eCampus / DiSUS</p>
     </div>
 
     <div class="footer-bottom">
@@ -35,10 +34,48 @@
         https://repomit.vercel.app
       </a>
     </div>
+    {#if statistics}
+      <p class="public-counter">
+        <strong>{statistics.total.toLocaleString('es-ES')} páginas consultadas</strong>
+        {#if statistics.firstSeen}
+          · desde el {new Date(statistics.firstSeen).toLocaleDateString('es-ES', {
+            timeZone: 'UTC',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          })}
+        {:else}
+          · contador recién activado
+        {/if}
+        <span>Consultas de páginas, no visitantes únicos.</span>
+      </p>
+    {/if}
+    <div class="editor-access"><a href="/admin" aria-label="Acceso de edición">Edición</a></div>
   </div>
 </footer>
 
 <style>
+  .public-counter {
+    margin-top: 1rem;
+  }
+  .public-counter span {
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 0.15rem;
+  }
+  .editor-access {
+    margin-top: 0.9rem;
+    text-align: right;
+    font-size: 0.75rem;
+  }
+  .editor-access a {
+    color: #686257;
+    text-decoration: none;
+  }
+  .editor-access a:hover,
+  .editor-access a:focus-visible {
+    text-decoration: underline;
+  }
   .site-footer {
     border-top: 1px solid #e4dfd4;
     background: #f4f1ea;

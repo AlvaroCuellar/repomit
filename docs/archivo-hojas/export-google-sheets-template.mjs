@@ -37,7 +37,6 @@ const TESTIMONIO_FIELDS = [
   'signatura',
   'recopilador',
   'fecha',
-  'contenido',
   'enlace',
   'bibliografia',
   'autores_ficha'
@@ -52,7 +51,6 @@ const HTML_FIELD_MAP = {
   incipit_interno: 'incipit_interno_html',
   estribillo_entero: 'estribillo_entero_html',
   transcripcion: 'transcripcion_html',
-  contenido: 'contenido_html',
   bibliografia: 'bibliografia_html'
 };
 
@@ -124,7 +122,7 @@ function addInstructionsSheet(workbook) {
     ],
     [
       'Testimonios',
-      'Contiene la información de cada manuscrito: ciudad, institución, signatura, fecha, contenido, bibliografía y responsables de la ficha.'
+      'Contiene la información de cada manuscrito: sigla, ciudad, institución, signatura, fecha, enlace, bibliografía y responsables de la ficha. El contenido se genera automáticamente desde Poemas.'
     ],
     [
       'Poemas',
@@ -136,7 +134,7 @@ function addInstructionsSheet(workbook) {
     ],
     [
       'Qué no tocar',
-      'No cambiar los nombres de las pestañas, no borrar la primera fila de encabezados y no renombrar las columnas. Si se cambia una sigla de testimonio, revisar también los poemas asociados.'
+      'No cambiar los nombres de las pestañas ni borrar la primera fila de encabezados. Al cambiar una sigla en Testimonios, el script actualiza las filas asociadas de Poemas.'
     ],
     [
       'Cómo publicar cambios',
@@ -232,7 +230,7 @@ function getColumnWidth(header, sheetName) {
   if (sheetName === 'Contenido web' && header === 'texto') {
     return 110;
   }
-  if (['incipit', 'segundo_verso', 'explicit', 'contenido', 'bibliografia', 'transcripcion'].includes(header)) {
+  if (['incipit', 'segundo_verso', 'explicit', 'bibliografia', 'transcripcion'].includes(header)) {
     return 48;
   }
   if (['esquema_metrico', 'estructura_cabeza', 'incipit_desarrollo', 'estructura_interna', 'incipit_interno', 'estribillo_entero'].includes(header)) {

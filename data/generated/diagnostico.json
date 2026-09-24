@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-07-06T17:27:01.653Z",
+  "generated_at": "2026-07-16T13:27:03.404Z",
   "data_source": "excel",
   "input_dir": "data/excel",
   "files": [
@@ -107,6 +107,14 @@
   "normalizations": [
     {
       "file": "RoLC 625 (okok).xlsx",
+      "row": 2,
+      "item": "RoLC 44.A.16",
+      "field": "testimonio",
+      "from": "RoLC 44.A.16",
+      "to": "RoLC 625"
+    },
+    {
+      "file": "RoLC 625 (okok).xlsx",
       "row": 28,
       "item": "RoLC 625-27",
       "field": "forma",
@@ -122,14 +130,6 @@
       "poemas_afectados": 72,
       "ejemplo_item_original": "NANB V.A.16-1",
       "ejemplo_item_canonico": "NaNB V.A.16-1"
-    },
-    {
-      "campo": "testimonio",
-      "de": "RoLC 625",
-      "a": "RoLC 44.A.16",
-      "poemas_afectados": 33,
-      "ejemplo_item_original": "RoLC 625-1",
-      "ejemplo_item_canonico": "RoLC 44.A.16-1"
     }
   ],
   "notes": [],
@@ -160,8 +160,8 @@
         "poemas_asociados": 72
       },
       {
-        "id": "rolc-44a16",
-        "testimonio": "RoLC 44.A.16",
+        "id": "rolc-625",
+        "testimonio": "RoLC 625",
         "ciudad": "Roma",
         "institucion": "Biblioteca dell'Accademia dei Lincei",
         "signatura": "Fondo Corsini, ms. 625",
@@ -1109,147 +1109,147 @@
           ]
         },
         {
-          "id_tecnico": "rolc-44a16",
+          "id_tecnico": "rolc-625",
           "variantes": [
             {
-              "valor": "RoLC 44.A.16",
+              "valor": "RoLC 625",
               "apariciones": 34,
               "fuentes": [
                 {
                   "archivo": "testimonios.json",
-                  "registro": "rolc-44a16"
+                  "registro": "rolc-625"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-001"
+                  "registro": "rolc-625-001"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-002"
+                  "registro": "rolc-625-002"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-003"
+                  "registro": "rolc-625-003"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-004"
+                  "registro": "rolc-625-004"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-005"
+                  "registro": "rolc-625-005"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-006"
+                  "registro": "rolc-625-006"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-007"
+                  "registro": "rolc-625-007"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-008"
+                  "registro": "rolc-625-008"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-009"
+                  "registro": "rolc-625-009"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-010"
+                  "registro": "rolc-625-010"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-011"
+                  "registro": "rolc-625-011"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-012"
+                  "registro": "rolc-625-012"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-013"
+                  "registro": "rolc-625-013"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-014"
+                  "registro": "rolc-625-014"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-015"
+                  "registro": "rolc-625-015"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-016"
+                  "registro": "rolc-625-016"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-017"
+                  "registro": "rolc-625-017"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-018"
+                  "registro": "rolc-625-018"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-019"
+                  "registro": "rolc-625-019"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-020"
+                  "registro": "rolc-625-020"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-021"
+                  "registro": "rolc-625-021"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-022"
+                  "registro": "rolc-625-022"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-023"
+                  "registro": "rolc-625-023"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-024"
+                  "registro": "rolc-625-024"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-025"
+                  "registro": "rolc-625-025"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-026"
+                  "registro": "rolc-625-026"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-027"
+                  "registro": "rolc-625-027"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-028"
+                  "registro": "rolc-625-028"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-029"
+                  "registro": "rolc-625-029"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-030"
+                  "registro": "rolc-625-030"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-031"
+                  "registro": "rolc-625-031"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-032"
+                  "registro": "rolc-625-032"
                 },
                 {
                   "archivo": "poemas.json",
-                  "registro": "rolc-44a16-033"
+                  "registro": "rolc-625-033"
                 }
               ]
             }
@@ -1508,14 +1508,6 @@
           "poemas_afectados": 72,
           "ejemplo_item_original": "NANB V.A.16-1",
           "ejemplo_item_canonico": "NaNB V.A.16-1"
-        },
-        {
-          "campo": "testimonio",
-          "de": "RoLC 625",
-          "a": "RoLC 44.A.16",
-          "poemas_afectados": 33,
-          "ejemplo_item_original": "RoLC 625-1",
-          "ejemplo_item_canonico": "RoLC 44.A.16-1"
         }
       ]
     },
@@ -1550,10 +1542,9 @@
     "errores": {
       "bloqueantes": [],
       "avisos_no_bloqueantes": [
-        "Testimonio canonicalizado en poemas: NANB V.A.16 -> NaNB V.A.16 (72 poema(s)).",
-        "Testimonio canonicalizado en poemas: RoLC 625 -> RoLC 44.A.16 (33 poema(s))."
+        "Testimonio canonicalizado en poemas: NANB V.A.16 -> NaNB V.A.16 (72 poema(s))."
       ]
     }
   },
-  "quality_report_generated_at": "2026-07-06T17:27:02.016Z"
+  "quality_report_generated_at": "2026-07-16T13:27:06.859Z"
 }

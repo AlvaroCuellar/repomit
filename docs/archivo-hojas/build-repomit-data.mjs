@@ -50,6 +50,10 @@ const TESTIMONIO_FIELDS = [
   'autores_ficha'
 ];
 
+const TESTIMONIO_NAME_ALIASES = new Map([
+  ['rolc-44a16', 'RoLC 625']
+]);
+
 const POEMA_HTML_FIELDS = [
   'incipit',
   'segundo_verso',
@@ -392,9 +396,17 @@ function parseCsv(csv) {
 function readTableRows(table, fields, isRealRow) {
   const records = [];
   let skippedRows = 0;
+  const headerRow = table[0] ?? [];
+  const headerIndexes = new Map(
+    headerRow.map((cell, index) => [technicalId(cell).replaceAll('-', '_'), index])
+  );
+  const hasNamedHeaders = fields.some((field) => headerIndexes.has(field));
 
   table.forEach((rawRow, rowIndex) => {
-    const values = fields.map((field, index) => readPlainCell(rawRow[index], field));
+    const values = fields.map((field, index) => {
+      const sourceIndex = hasNamedHeaders ? headerIndexes.get(field) : index;
+      return readPlainCell(sourceIndex === undefined ? '' : rawRow[sourceIndex], field);
+    });
 
     if (isHeaderRow(values, fields)) {
       skippedRows += 1;
@@ -592,7 +604,8 @@ function buildPoema(row, sourceFile, canonicalTestimonios, sourceFileTestimonios
   const record = normalizeRecord(row.record);
   normalizePoemaFields(record, row, sourceFile);
   const testimonioOriginal = record.testimonio;
-  const testimonioOriginalId = technicalId(testimonioOriginal);
+  const testimonioResolved = resolveTestimonioName(testimonioOriginal);
+  const testimonioOriginalId = technicalId(testimonioResolved);
   const fallbackTestimonio = getSingleSourceTestimonio(sourceFile, sourceFileTestimonios);
   const testimonioCanonico =
     canonicalTestimonios.get(testimonioOriginalId)?.testimonio ?? fallbackTestimonio?.testimonio;
@@ -694,6 +707,20 @@ function recordCanonicalization({ campo, de, a, ejemplo_item_original, ejemplo_i
 
 function buildTestimonio(row, sourceFile) {
   const record = normalizeRecord(row.record);
+  const testimonioOriginal = record.testimonio;
+  record.testimonio = resolveTestimonioName(testimonioOriginal);
+
+  if (testimonioOriginal && record.testimonio !== testimonioOriginal) {
+    diagnostics.normalizations.push({
+      file: sourceFile,
+      row: row.rowNumber,
+      item: testimonioOriginal,
+      field: 'testimonio',
+      from: testimonioOriginal,
+      to: record.testimonio
+    });
+  }
+
   const id = technicalId(record.testimonio);
   const testimonio = {
     id,
@@ -708,6 +735,11 @@ function buildTestimonio(row, sourceFile) {
   }
 
   return testimonio;
+}
+
+function resolveTestimonioName(value) {
+  const text = cleanText(value);
+  return TESTIMONIO_NAME_ALIASES.get(technicalId(text)) ?? text;
 }
 
 function readCell(cell, field) {

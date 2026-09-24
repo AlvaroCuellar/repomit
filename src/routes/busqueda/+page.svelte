@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { poemas, testimonios } from '$lib/data/repomit';
+  export let data;
+  $: ({ poemas, testimonios } = data);
   import {
     getFormaOptions,
     getTestimonioOptions,
@@ -10,8 +11,8 @@
     type SearchScope
   } from '$lib/search/repomit-search';
 
-  const formaOptions = getFormaOptions(poemas);
-  const testimonioOptions = getTestimonioOptions(testimonios);
+  $: formaOptions = getFormaOptions(poemas);
+  $: testimonioOptions = getTestimonioOptions(testimonios);
 
   let query = '';
   let scope: SearchScope = 'incipit';

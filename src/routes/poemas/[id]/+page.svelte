@@ -1,13 +1,16 @@
 <script lang="ts">
+  import RecordCitation from '$lib/components/RecordCitation.svelte';
   import { page } from '$app/stores';
-  import { getPoema, poemas, type Poema } from '$lib/data/repomit';
+  import { escapeText, resolveRecordId, type Poema } from '$lib/data/repomit';
+  export let data;
+  $: poemas = data.poemas;
 
-  const sortedPoemas = [...poemas].sort(
+  $: sortedPoemas = [...poemas].sort(
     (a, b) => a.sort_incipit.localeCompare(b.sort_incipit, 'es') || a.id.localeCompare(b.id, 'es')
   );
 
-  $: id = $page.params.id;
-  $: poema = getPoema(id);
+  $: id = $page.params.id || '';
+  $: poema = poemas.find((entry) => entry.id === resolveRecordId(id));
   $: currentIndex = poema ? sortedPoemas.findIndex((entry) => entry.id === poema.id) : -1;
   $: previousPoema = currentIndex > 0 ? sortedPoemas[currentIndex - 1] : undefined;
   $: nextPoema =
@@ -25,7 +28,7 @@
   }
 
   function htmlOrText(html: string | undefined, text: string | undefined) {
-    return hasText(html) ? html : display(text);
+    return hasText(html) ? html : escapeText(display(text));
   }
 
   function fichaTestimonioHref(entry: Poema) {
@@ -150,7 +153,9 @@
   <section class="block">
     <h2>Transcripción</h2>
     {#if hasText(poema.transcripcion)}
-      <div class="transcription">{@html htmlOrText(poema.transcripcion_html, poema.transcripcion)}</div>
+      <div class="transcription">
+        {@html htmlOrText(poema.transcripcion_html, poema.transcripcion)}
+      </div>
     {:else}
       <p>No consta transcripción completa.</p>
     {/if}
@@ -172,6 +177,7 @@
       <a href={`/poemas/${nextPoema.id}`}>Siguiente: {nextPoema.incipit}</a>
     {/if}
   </nav>
+  <RecordCitation kind="poemas" record={poema} />
 {:else}
   <nav class="page-nav" aria-label="Navegación de ficha">
     <a href="/repertorio">Volver al repertorio</a>

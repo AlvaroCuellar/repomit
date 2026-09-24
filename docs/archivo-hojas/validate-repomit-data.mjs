@@ -15,7 +15,7 @@ const searchFields = [
   'sort_incipit'
 ];
 const htmlTagPattern = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
-const allowedHtmlTags = new Set(['em', 'br']);
+const allowedHtmlTags = new Set(['em', 'strong', 'a', 'br']);
 
 const poemas = await readJson('poemas.json');
 const testimonios = await readJson('testimonios.json');
