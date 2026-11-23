@@ -1,7 +1,8 @@
 import { redirect, error } from '@sveltejs/kit';
 import { getUser, sessionCookie } from '$lib/server/auth';
 import type { Handle } from '@sveltejs/kit';
-export const handle: Handle = async ({ event, resolve }) => {
+import { withDatabaseRequest } from '$lib/server/database';
+export const handle: Handle = async ({ event, resolve }) => withDatabaseRequest(async () => {
   try {
     event.locals.user = await getUser(event.cookies.get(sessionCookie));
   } catch {
@@ -31,4 +32,4 @@ export const handle: Handle = async ({ event, resolve }) => {
   response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   response.headers.set('X-Frame-Options', 'SAMEORIGIN');
   return response;
-};
+});

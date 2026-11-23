@@ -1,6 +1,6 @@
 # RePoMIt
 
-Repertorio digital de poesía áurea conservada en manuscritos italianos, con web pública y panel privado de catalogación. La aplicación utiliza SvelteKit, Node.js y PostgreSQL en producción; SQLite queda para el desarrollo local. La edición y publicación se realizan en el panel, sin conexión a Excel ni Google Sheets. Excel es una opción para incorporar lotes de fichas nuevas.
+Repertorio digital de poesía áurea conservada en manuscritos italianos, con web pública y panel privado de catalogación. La aplicación utiliza SvelteKit, Node.js y SQLite, con persistencia en Vercel Blob privado en producción y un archivo local en desarrollo. La edición y publicación se realizan en el panel, sin conexión a Excel ni Google Sheets. Excel es una opción para incorporar lotes de fichas nuevas.
 
 ## Empezar en local
 
@@ -16,7 +16,7 @@ Abre http://127.0.0.1:5173/admin. La primera inicialización crea una cuenta de 
 
 `db:init` importa una sola vez la instantánea de `data/generated/`: 298 poemas, 4 manuscritos y 19 secciones de texto en el corpus actual. Conserva identificadores, relaciones, cursivas y contenido académico. También normaliza las variantes históricas `si` y `sì` a `sí`. Repetir el comando conserva las ediciones de la base de datos. La instantánea es el material local disponible; no se consulta una hoja externa para comprobar si contiene cambios posteriores.
 
-Después de la migración, la única fuente de datos es `.local/repomit.sqlite`. Los JSON de `data/generated/`, incluido `diagnostico.json`, son una instantánea histórica: ya no se regeneran ni se leen al servir o compilar la web. Los originales y los scripts antiguos se conservan como archivo, sin dependencias operativas.
+En desarrollo local, la única fuente de datos es `.local/repomit.sqlite`. Los JSON de `data/generated/`, incluido `diagnostico.json`, son una instantánea histórica: ya no se regeneran ni se leen al servir o compilar la web. Los originales y los scripts antiguos se conservan como archivo, sin dependencias operativas.
 
 ## Edición
 
@@ -77,19 +77,23 @@ El servidor consulta los datos publicados en cada petición; no requiere compila
 
 `npm start` establece `BODY_SIZE_LIMIT=6M` para permitir los 5 MB del Excel y su envoltorio multipart. Si se inicia `node build` directamente, hay que establecer esa variable. El importador limita también el tamaño descomprimido, rechaza fórmulas y archivos con macros, y reconoce encabezados de las plantillas antiguas. Las vistas previas pertenecen a la cuenta que subió el archivo, caducan a las dos horas y se vuelven a validar al confirmar. El archivo original no se guarda en disco; el historial registra el archivo y la fila de procedencia.
 
-En Vercel, `DATABASE_URL` conecta la aplicación con PostgreSQL persistente. El proyecto de producción está desplegado en https://repomit.vercel.app y la base está vinculada a los entornos de producción, vista previa y desarrollo. Los cambios editoriales se guardan directamente allí y sobreviven a nuevos despliegues.
+En producción, `REPOMIT_STORAGE=vercel-blob` selecciona una instantánea SQLite en el objeto **privado** `repomit/database.sqlite`. Esta opción tiene prioridad sobre cualquier `DATABASE_URL` heredada. La web no necesita Neon ni otra suscripción de base de datos. Vercel proporciona `BLOB_READ_WRITE_TOKEN`; nunca se añade a Git ni al código del navegador.
 
-La consulta pública mantiene una caché por instancia y comprueba una revisión pequeña en `metadata`: descarga las fichas publicadas únicamente al arrancar la instancia o cambiar esa revisión. Publicar o retirar contenido actualiza la revisión en la misma transacción, también para las demás instancias. Los borradores y las vistas previas quedan fuera de la caché pública. La validación de órdenes duplicados se realiza dentro de SQL para evitar descargar todos los poemas por cada ficha de una importación o publicación.
+Cada petición utiliza una copia de trabajo aislada. Las lecturas consultan siempre la versión actual de Blob; las instancias reutilizan los bytes mediante peticiones condicionales sin descargar de nuevo una base intacta. Las escrituras se confirman con ETag (`ifMatch`): un conflicto repite la transacción completa sobre la última versión y una respuesta perdida se comprueba mediante un registro de operaciones, evitando duplicados. Los archivos temporales no son la fuente persistente y se eliminan al terminar. No se sustituye una base ausente por datos antiguos.
 
-El plan gratuito de Neon puede suspender las conexiones cuando agota su cuota mensual de transferencia, aunque Vercel siga funcionando. La optimización reduce ese consumo, pero el límite sigue dependiendo del tráfico y del número de arranques. Una suspensión no se resuelve cambiando `DATABASE_URL` por una copia local antigua. No se debe borrar la integración ni ejecutar el migrador destructivo sobre producción. El 23 de noviembre de 2026 la consola mostraba 5,51 GB consumidos y restablecimiento el 1 de diciembre de 2026 a las 00:00 UTC.
+Publicar o retirar una ficha actualiza una revisión transaccional del catálogo. La caché pública contiene únicamente fichas publicadas; las vistas previas y los borradores quedan fuera. La validación de órdenes duplicados se realiza dentro de SQL, sin descargar todo el corpus por cada ficha.
 
-Para obtener una copia completa cuando la conexión vuelva a estar disponible:
+Para descargar una copia privada y verificada desde Blob con las credenciales del entorno:
 
 ```bash
-node --experimental-strip-types scripts/export-postgres.ts .local/backups/production-NUEVA-FECHA.sqlite
+REPOMIT_STORAGE=vercel-blob node --env-file=.env.local --experimental-strip-types scripts/backup-db.ts
 ```
 
-El exportador utiliza una transacción PostgreSQL de solo lectura, conserva cuentas, historial y estadísticas, verifica integridad y recuentos y rechaza sobrescribir un archivo existente. Lee las credenciales del entorno o de `.env.local`; la copia resultante es privada y no debe añadirse a Git. El esquema PostgreSQL se provisiona mediante la migración inicial, no al arrancar cada función de Vercel.
+`REPOMIT_READ_ONLY=1` pausa temporalmente todas las escrituras durante una migración; en funcionamiento normal debe estar en `0` o ausente. Las copias de seguridad no deben publicarse: incluyen cuentas y borradores.
+
+El almacenamiento y las operaciones de Blob consumen los créditos y límites de Vercel. No hay una suscripción adicional a Neon; superar los créditos de Vercel puede producir cargos por uso en Vercel. El tamaño y el tráfico determinan el consumo, por lo que no se promete almacenamiento ilimitado gratuito.
+
+Se conserva `scripts/export-postgres.ts` para recuperar el origen legado mediante una transacción de solo lectura y verificación completa. `scripts/seed-blob.ts` carga una copia exportada a un destino privado nuevo y verifica su SHA-256; rechaza sobrescribir una base ya existente. No ejecutar el migrador PostgreSQL destructivo para restaurar producción.
 
 ## Estructura
 
@@ -99,7 +103,7 @@ El exportador utiliza una transacción PostgreSQL de solo lectura, conserva cuen
 - `src/routes/admin/`: acceso y panel de edición.
 - `src/routes/`: web pública que consulta los registros publicados.
 - `scripts/init-db.ts`: migración única y cuenta inicial.
-- `scripts/backup-db.ts`: copia coherente de la base.
+- `scripts/backup-db.ts`: copia coherente de SQLite local o de la instantánea privada de Vercel.
 - `scripts/migrate-postgres.ts`: migración controlada de una copia SQLite a PostgreSQL.
 - `tests/`: pruebas de datos, seguridad y navegador.
 - `docs/archivo-hojas/`: archivo del sistema anterior; no se ejecuta.

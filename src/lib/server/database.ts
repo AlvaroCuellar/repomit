@@ -3,11 +3,14 @@ import { mkdirSync, chmodSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import pg from 'pg';
+import { BlobDatabase } from './blob-database.ts';
 
-export const usingPostgres = Boolean(process.env.DATABASE_URL);
+export const usingBlob = process.env.REPOMIT_STORAGE === 'vercel-blob';
+export const usingPostgres = !usingBlob && Boolean(process.env.DATABASE_URL);
+const blob = usingBlob ? new BlobDatabase() : undefined;
 export const databasePath = resolve(process.env.REPOMIT_DB || '.local/repomit.sqlite');
 let sqlite: DatabaseSync | undefined;
-if (!usingPostgres) {
+if (!usingPostgres && !usingBlob) {
   mkdirSync(dirname(databasePath), { recursive: true, mode: 0o700 });
   sqlite = new DatabaseSync(databasePath);
   chmodSync(databasePath, 0o600);
@@ -23,7 +26,11 @@ const pool = usingPostgres
   : undefined;
 const active = new AsyncLocalStorage<pg.PoolClient>();
 export function inTransaction(): boolean {
+  if (blob) return blob.isInTransaction();
   return usingPostgres ? Boolean(active.getStore()) : Boolean(sqlite?.isTransaction);
+}
+export function withDatabaseRequest<T>(fn: () => Promise<T>): Promise<T> {
+  return blob ? blob.withRequest(fn) : fn();
 }
 const sqliteSql = (sql: string) =>
   sql
@@ -35,6 +42,7 @@ export async function all<T = Record<string, unknown>>(
   sql: string,
   params: unknown[] = []
 ): Promise<T[]> {
+  if (blob) return blob.all<T>(sql, params);
   if (usingPostgres) return (await (active.getStore() || pool!).query(sql, params)).rows as T[];
   return sqlite!.prepare(sqliteSql(sql)).all(...(params as SQLInputValue[])) as T[];
 }
@@ -45,10 +53,12 @@ export async function one<T = Record<string, unknown>>(
   return (await all<T>(sql, params))[0];
 }
 export async function run(sql: string, params: unknown[] = []) {
+  if (blob) return blob.run(sql, params);
   if (usingPostgres) return (await (active.getStore() || pool!).query(sql, params)).rowCount;
   return Number(sqlite!.prepare(sqliteSql(sql)).run(...(params as SQLInputValue[])).changes);
 }
 export async function transaction<T>(fn: () => Promise<T>): Promise<T> {
+  if (blob) return blob.transaction(fn);
   if (!usingPostgres) {
     if (sqlite!.isTransaction) return fn();
     sqlite!.exec('BEGIN IMMEDIATE');
@@ -89,7 +99,7 @@ const schema = `
 `;
 // Production schema is provisioned by the migration script. A database outage
 // must not reject the server module itself before SvelteKit can handle requests.
-if (!usingPostgres) {
+if (!usingPostgres && !usingBlob) {
   sqlite!.exec('PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;');
   sqlite!.exec(schema);
 }
