@@ -9,6 +9,11 @@ export const handle: Handle = async ({ event, resolve }) => {
   }
   const privatePath = event.url.pathname.startsWith('/admin');
   if (
+    process.env.REPOMIT_READ_ONLY === '1' &&
+    !['GET', 'HEAD', 'OPTIONS'].includes(event.request.method)
+  )
+    error(503, 'La edición está pausada brevemente durante una migración. Vuelve a intentarlo en unos minutos.');
+  if (
     privatePath &&
     event.request.method !== 'GET' &&
     event.request.method !== 'HEAD' &&
