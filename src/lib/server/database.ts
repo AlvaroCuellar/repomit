@@ -17,10 +17,14 @@ const pool = usingPostgres
   ? new pg.Pool({
       connectionString: process.env.DATABASE_URL,
       max: 5,
+      connectionTimeoutMillis: 10000,
       ssl: { rejectUnauthorized: false }
     })
   : undefined;
 const active = new AsyncLocalStorage<pg.PoolClient>();
+export function inTransaction(): boolean {
+  return usingPostgres ? Boolean(active.getStore()) : Boolean(sqlite?.isTransaction);
+}
 const sqliteSql = (sql: string) =>
   sql
     .replace(/\s+FOR UPDATE\b/gi, '')
@@ -83,8 +87,9 @@ const schema = `
  CREATE TABLE IF NOT EXISTS metric_forms (normalized_name TEXT PRIMARY KEY,name TEXT NOT NULL,created_by TEXT NOT NULL,created_at TEXT NOT NULL);
  CREATE TABLE IF NOT EXISTS import_batches (id TEXT PRIMARY KEY,user_id TEXT NOT NULL REFERENCES users(id),filename TEXT NOT NULL,payload TEXT NOT NULL,plan TEXT NOT NULL,created_at BIGINT NOT NULL,expires_at BIGINT NOT NULL,result TEXT);
 `;
-if (usingPostgres) await pool!.query(schema);
-else {
+// Production schema is provisioned by the migration script. A database outage
+// must not reject the server module itself before SvelteKit can handle requests.
+if (!usingPostgres) {
   sqlite!.exec('PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;');
   sqlite!.exec(schema);
 }

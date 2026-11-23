@@ -2,7 +2,11 @@ import { redirect, error } from '@sveltejs/kit';
 import { getUser, sessionCookie } from '$lib/server/auth';
 import type { Handle } from '@sveltejs/kit';
 export const handle: Handle = async ({ event, resolve }) => {
-  event.locals.user = await getUser(event.cookies.get(sessionCookie));
+  try {
+    event.locals.user = await getUser(event.cookies.get(sessionCookie));
+  } catch {
+    error(503, 'El repertorio no está disponible temporalmente. Vuelve a intentarlo más tarde.');
+  }
   const privatePath = event.url.pathname.startsWith('/admin');
   if (
     privatePath &&

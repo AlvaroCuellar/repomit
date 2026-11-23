@@ -38,3 +38,11 @@ export async function visitStatistics(now = new Date()) {
     days: days.map((day) => ({ day: day.day, total: Number(day.total) }))
   };
 }
+
+// The public header needs only the total, not the complete daily series.
+export async function publicVisitStatistics() {
+  await initialize();
+  const summary = await one<{ total: number | string; first_seen: string | null }>(
+    'SELECT COALESCE(SUM(total),0) AS total, MIN(first_seen) AS first_seen FROM site_visits');
+  return { total: Number(summary?.total || 0), firstSeen: summary?.first_seen || null };
+}

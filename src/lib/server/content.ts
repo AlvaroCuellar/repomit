@@ -1,7 +1,7 @@
 import sanitizeHtml from 'sanitize-html';
 import { decodeHTML } from 'entities';
 import { randomUUID } from 'node:crypto';
-import { all, one, run, transaction } from './database.ts';
+import { all, one, run, transaction, inTransaction, usingPostgres } from './database.ts';
 import { findForm } from './vocabulary.ts';
 import { fields, richFields, conditions, type Content, type Kind } from '../editor/schema.ts';
 import type { Poema, Testimonio, SiteContent } from '../data/repomit';
@@ -56,6 +56,17 @@ export async function history(id: string) {
   );
 }
 export class ContentError extends Error {}
+const PUBLIC_REVISION_KEY = 'published-catalogue-revision';
+type PublicData = { poemas: Poema[]; testimonios: Testimonio[]; site: SiteContent };
+let publishedCache: { revision: string; data: PublicData } | undefined;
+
+async function markPublishedChange() {
+  // Commit the revision with the content, so every Vercel instance observes publication.
+  await run(
+    'INSERT INTO metadata(key,value) VALUES($1,$2) ON CONFLICT(key) DO UPDATE SET value=excluded.value',
+    [PUBLIC_REVISION_KEY, randomUUID()]
+  );
+}
 export function sanitizeContent(kind: Kind, input: Content): Content {
   const result: Content = {};
   for (const [key] of fields[kind]) {
@@ -90,16 +101,16 @@ async function validate(kind: Kind, id: string, value: Content, publishing: bool
       throw new ContentError('Selecciona un manuscrito existente.');
     if (publishing && !parent.published)
       throw new ContentError('Publica primero el manuscrito de esta ficha.');
-    for (const row of (await listRecords('poemas')).filter((r) => r.id !== id)) {
-      for (const source of [row.draft, row.published].filter(Boolean)) {
-        const other = JSON.parse(source!);
-        if (
-          other.testimonio_id === value.testimonio_id &&
-          Number(other.orden) === Number(value.orden)
-        )
-          throw new ContentError('Este número de orden ya existe en el manuscrito.');
-      }
-    }
+    const duplicateCondition = (column: 'draft' | 'published', parent: number, order: number) =>
+      usingPostgres
+        ? `(${column}::jsonb->>'testimonio_id' = $${parent} AND CAST(${column}::jsonb->>'orden' AS NUMERIC) = $${order})`
+        : `(json_extract(${column}, '$.testimonio_id') = $${parent} AND CAST(json_extract(${column}, '$.orden') AS NUMERIC) = $${order})`;
+    const duplicate = await one<{ id: string }>(
+      `SELECT id FROM records WHERE kind='poemas' AND id<>$1 AND (${duplicateCondition('draft', 2, 3)} OR ${duplicateCondition('published', 4, 5)}) LIMIT 1`,
+      [id, value.testimonio_id, Number(value.orden), value.testimonio_id, Number(value.orden)]
+    );
+    if (duplicate)
+      throw new ContentError('Este número de orden ya existe en el manuscrito.');
     if (
       value.forma &&
       value.forma !== '—' &&
@@ -201,6 +212,7 @@ export async function saveRecord(
       'INSERT INTO history(record_id,content,action,author,created_at) VALUES($1,$2,$3,$4,$5)',
       [recordId, json, action === 'publish' ? 'Publicación' : 'Borrador', author, date]
     );
+    if (action === 'publish') await markPublishedChange();
     return recordId;
   });
 }
@@ -233,6 +245,7 @@ export function unpublishRecord(id: string, version: number, author: string) {
       'INSERT INTO history(record_id,content,action,author,created_at) VALUES($1,$2,$3,$4,$5)',
       [id, row.draft, 'Retirada de publicación', author, new Date().toISOString()]
     );
+    if (row.published) await markPublishedChange();
   });
 }
 
@@ -258,16 +271,26 @@ export function deleteRecord(id: string, version: number) {
     return { kind: row.kind, deleted: ids.length };
   });
 }
-export async function publicData(preview?: { kind: Kind; id: string; content: Content }) {
-  const rows = await listRecords();
+export async function publicData(preview?: { kind: Kind; id: string; content: Content }): Promise<PublicData> {
+  // Never reuse or populate shared state from an uncommitted editorial transaction.
+  const cacheable = !preview && !inTransaction();
+  const revision = cacheable
+    ? (await one<{ value: string }>('SELECT value FROM metadata WHERE key=$1', [PUBLIC_REVISION_KEY]))?.value || ''
+    : undefined;
+  if (cacheable && publishedCache && publishedCache.revision === revision) return publishedCache.data;
+
+  type PublicRow = Pick<RecordRow, 'id' | 'kind' | 'published'> & { draft?: string };
+  const rows: PublicRow[] = preview
+    ? await listRecords()
+    : await all<PublicRow>('SELECT id,kind,published FROM records WHERE published IS NOT NULL ORDER BY updated_at DESC,id');
   if (preview?.kind === 'poemas') {
     const parent = rows.find((r) => r.id === preview.content.testimonio_id);
-    if (parent && !parent.published) parent.published = parent.draft;
+    if (parent && !parent.published) parent.published = parent.draft!;
   }
   if (preview?.kind === 'testimonios')
     for (const row of rows) {
-      if (row.kind === 'poemas' && JSON.parse(row.draft).testimonio_id === preview.id)
-        row.published = row.draft;
+      if (row.kind === 'poemas' && JSON.parse(row.draft!).testimonio_id === preview.id)
+        row.published = row.draft!;
     }
   const contents = (kind: Kind) =>
     rows
@@ -281,10 +304,7 @@ export async function publicData(preview?: { kind: Kind; id: string; content: Co
       id: preview.id,
       kind: preview.kind,
       draft: JSON.stringify(preview.content),
-      published: null,
-      version: 0,
-      updated_at: '',
-      updated_by: ''
+      published: null
     });
   const testimonios = contents('testimonios').map((t) => ({
     ...t,
@@ -347,7 +367,9 @@ export async function publicData(preview?: { kind: Kind; id: string; content: Co
       title: t.title,
       paragraphs: [cleanHtml(t.texto).replace(/\n/g, '<br>')]
     }));
-  return { poemas, testimonios, site };
+  const data = { poemas, testimonios, site };
+  if (cacheable && !inTransaction()) publishedCache = { revision: revision!, data };
+  return data;
 }
 
 export function publishManuscript(

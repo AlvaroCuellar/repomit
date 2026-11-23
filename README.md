@@ -79,6 +79,18 @@ El servidor consulta los datos publicados en cada petición; no requiere compila
 
 En Vercel, `DATABASE_URL` conecta la aplicación con PostgreSQL persistente. El proyecto de producción está desplegado en https://repomit.vercel.app y la base está vinculada a los entornos de producción, vista previa y desarrollo. Los cambios editoriales se guardan directamente allí y sobreviven a nuevos despliegues.
 
+La consulta pública mantiene una caché por instancia y comprueba una revisión pequeña en `metadata`: descarga las fichas publicadas únicamente al arrancar la instancia o cambiar esa revisión. Publicar o retirar contenido actualiza la revisión en la misma transacción, también para las demás instancias. Los borradores y las vistas previas quedan fuera de la caché pública. La validación de órdenes duplicados se realiza dentro de SQL para evitar descargar todos los poemas por cada ficha de una importación o publicación.
+
+El plan gratuito de Neon puede suspender las conexiones cuando agota su cuota mensual de transferencia, aunque Vercel siga funcionando. La optimización reduce ese consumo, pero el límite sigue dependiendo del tráfico y del número de arranques. Una suspensión no se resuelve cambiando `DATABASE_URL` por una copia local antigua. No se debe borrar la integración ni ejecutar el migrador destructivo sobre producción. El 23 de noviembre de 2026 la consola mostraba 5,51 GB consumidos y restablecimiento el 1 de diciembre de 2026 a las 00:00 UTC.
+
+Para obtener una copia completa cuando la conexión vuelva a estar disponible:
+
+```bash
+node --experimental-strip-types scripts/export-postgres.ts .local/backups/production-NUEVA-FECHA.sqlite
+```
+
+El exportador utiliza una transacción PostgreSQL de solo lectura, conserva cuentas, historial y estadísticas, verifica integridad y recuentos y rechaza sobrescribir un archivo existente. Lee las credenciales del entorno o de `.env.local`; la copia resultante es privada y no debe añadirse a Git. El esquema PostgreSQL se provisiona mediante la migración inicial, no al arrancar cada función de Vercel.
+
 ## Estructura
 
 - `src/lib/server/`: base de datos, cuentas, validación, historial y publicación.
